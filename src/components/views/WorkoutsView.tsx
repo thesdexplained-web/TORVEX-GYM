@@ -16,7 +16,8 @@ import {
   Layers,
   BookOpen,
   Info,
-  CheckCircle2
+  CheckCircle2,
+  RotateCcw
 } from 'lucide-react';
 import { Workout, WorkoutCategory, WorkoutDifficulty, Exercise } from '../../types';
 import { WorkoutService } from '../../services/workoutService';
