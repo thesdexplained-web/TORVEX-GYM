@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Global catalog collections (workouts, categories, exercises, achievement definitions, etc.)
+    match /workouts/{workoutId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /exercises/{exerciseId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /workout_categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /daily_challenges/{challengeId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /achievement_definitions/{achievementId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    match /subscription_products/{productId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // User private profiles and subcollections
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      match /{subcollection=**} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+  }
+}

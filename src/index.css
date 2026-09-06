@@ -1,0 +1,256 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Smooth transition for theme switching */
+html, body {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ============================================================
+   LIGHT MODE AESTHETIC SYSTEM: ATHLETIC DAYLIGHT & CHAMPIONSHIP GOLD
+   Transforms pale/washed-out yellow into deep, rich, high-contrast
+   athletic gold, warm bronze, and vibrant amber across light theme.
+   ============================================================ */
+html:not(.dark) {
+  color-scheme: light;
+}
+
+html:not(.dark) body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Background Card Surfaces */
+html:not(.dark) .bg-zinc-950,
+html:not(.dark) .bg-zinc-950\/90,
+html:not(.dark) .bg-zinc-950\/95,
+html:not(.dark) .bg-zinc-950\/80 {
+  background-color: #f8fafc !important;
+}
+
+html:not(.dark) .bg-zinc-900,
+html:not(.dark) .bg-zinc-900\/90,
+html:not(.dark) .bg-zinc-900\/80 {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+}
+
+html:not(.dark) .bg-zinc-800,
+html:not(.dark) .bg-zinc-800\/60,
+html:not(.dark) .bg-zinc-800\/80 {
+  background-color: #f1f5f9 !important;
+}
+
+/* Neutral Typography */
+html:not(.dark) .text-white,
+html:not(.dark) .text-zinc-100,
+html:not(.dark) .text-zinc-200 {
+  color: #09090b !important;
+}
+
+html:not(.dark) .text-zinc-300,
+html:not(.dark) .text-zinc-400 {
+  color: #475569 !important;
+}
+
+html:not(.dark) .text-zinc-500 {
+  color: #64748b !important;
+}
+
+html:not(.dark) .border-zinc-800,
+html:not(.dark) .border-zinc-800\/80,
+html:not(.dark) .border-zinc-700 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Headers & Navigation Bars */
+html:not(.dark) header {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-bottom-color: #e2e8f0 !important;
+}
+
+html:not(.dark) nav {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Inputs & Form Controls */
+html:not(.dark) input,
+html:not(.dark) select,
+html:not(.dark) textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html:not(.dark) input::placeholder,
+html:not(.dark) textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* ============================================================
+   LIGHT MODE YELLOW / AMBER ENHANCEMENT
+   Solves the washed-out yellow problem in light mode by elevating
+   it into high-contrast athletic gold (#b45309), punchy vibrant
+   icons (#d97706), warm champagne badges (#fef3c7), and metallic
+   golden-amber gradient action buttons.
+   ============================================================ */
+
+/* 1. High-Contrast Legible Yellow/Amber Text (5.2:1+ WCAG AA Pass) */
+html:not(.dark) .text-amber-400,
+html:not(.dark) .text-amber-500,
+html:not(.dark) .text-yellow-400,
+html:not(.dark) .text-yellow-500 {
+  color: #b45309 !important; /* Deep athletic amber-700 */
+}
+
+html:not(.dark) .text-amber-300 {
+  color: #92400e !important; /* Rich warm amber-800 */
+}
+
+html:not(.dark) .hover\:text-amber-400:hover,
+html:not(.dark) .hover\:text-amber-500:hover {
+  color: #92400e !important;
+}
+
+/* 2. Punchy, High-Definition Athletic Gold Icons & Fills */
+html:not(.dark) svg.text-amber-400,
+html:not(.dark) svg.text-amber-500,
+html:not(.dark) .text-amber-400 > svg,
+html:not(.dark) .text-amber-500 > svg {
+  color: #d97706 !important;
+}
+
+html:not(.dark) .fill-amber-500,
+html:not(.dark) .fill-amber-400,
+html:not(.dark) .fill-yellow-400,
+html:not(.dark) .fill-yellow-500 {
+  fill: #d97706 !important;
+}
+
+/* 3. Luxurious Warm Champagne/Gold Badges and Pills */
+html:not(.dark) .bg-amber-500\/10,
+html:not(.dark) .bg-amber-400\/10 {
+  background-color: #fef3c7 !important; /* Amber-100: clean warm gold tint */
+  border-color: #fde68a !important;     /* Amber-200 */
+}
+
+html:not(.dark) .bg-amber-500\/20,
+html:not(.dark) .bg-amber-400\/20 {
+  background-color: #fde68a !important; /* Amber-200 */
+  border-color: #fcd34d !important;     /* Amber-300 */
+}
+
+html:not(.dark) .border-amber-500\/20,
+html:not(.dark) .border-amber-500\/30,
+html:not(.dark) .border-amber-500\/40,
+html:not(.dark) .border-amber-500\/50 {
+  border-color: #fcd34d !important;
+}
+
+/* Text and icons inside soft amber tags/banners */
+html:not(.dark) .bg-amber-500\/10,
+html:not(.dark) .bg-amber-500\/10 span,
+html:not(.dark) .bg-amber-500\/10 p,
+html:not(.dark) .bg-amber-500\/20,
+html:not(.dark) .bg-amber-500\/20 span {
+  color: #92400e !important; /* Amber-800: crisp, dark, readable */
+}
+
+html:not(.dark) .bg-amber-500\/10 svg,
+html:not(.dark) .bg-amber-500\/20 svg {
+  color: #b45309 !important;
+  fill: #b45309 !important;
+}
+
+/* 4. Championship Gold Primary Action Buttons */
+html:not(.dark) .bg-amber-500 {
+  background-color: #f59e0b !important;
+  background-image: linear-gradient(135deg, #fbbf24 0%, #f59e0b 55%, #d97706 100%) !important;
+  color: #09090b !important;
+  border: 1px solid rgba(217, 119, 6, 0.4) !important;
+  box-shadow: 0 4px 12px -2px rgba(217, 119, 6, 0.35) !important;
+}
+
+html:not(.dark) .bg-amber-500 * {
+  color: #09090b !important;
+}
+
+html:not(.dark) .bg-amber-500 svg {
+  color: #09090b !important;
+  fill: #09090b !important;
+}
+
+html:not(.dark) button.bg-amber-500:hover,
+html:not(.dark) .bg-amber-500:hover {
+  background-image: linear-gradient(135deg, #f59e0b 0%, #d97706 80%, #b45309 100%) !important;
+  box-shadow: 0 6px 16px -2px rgba(217, 119, 6, 0.45) !important;
+}
+
+/* Gradient CTA Buttons (e.g. 7-Day Trial in Header) */
+html:not(.dark) .from-amber-500.to-amber-600 {
+  background-image: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%) !important;
+  color: #09090b !important;
+  border: 1px solid rgba(217, 119, 6, 0.4) !important;
+  box-shadow: 0 4px 12px -2px rgba(217, 119, 6, 0.3) !important;
+}
+
+html:not(.dark) .from-amber-500.to-amber-600 * {
+  color: #09090b !important;
+}
+
+/* 5. Mobile Navigation Active Tab in Light Mode */
+html:not(.dark) [id^="mobile_nav_"].text-amber-400,
+html:not(.dark) .md\:hidden button.bg-amber-500\/10 {
+  background-color: #fef3c7 !important;
+  border: 1px solid #fde68a !important;
+}
+
+html:not(.dark) [id^="mobile_nav_"].text-amber-400 svg {
+  color: #92400e !important;
+}
+
+html:not(.dark) [id^="mobile_nav_"].text-amber-400 span {
+  color: #92400e !important;
+  font-weight: 800 !important;
+}
+
+/* 6. Training Hub Mode Tabs & Category Filter Buttons */
+html:not(.dark) #tab_programs.bg-amber-500,
+html:not(.dark) #tab_exercise_library.bg-amber-500,
+html:not(.dark) [id^="workouts_cat_"].bg-amber-500 {
+  background-image: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%) !important;
+  color: #09090b !important;
+  font-weight: 800 !important;
+  box-shadow: 0 3px 10px 0 rgba(217, 119, 6, 0.25) !important;
+  border: 1px solid rgba(217, 119, 6, 0.4) !important;
+}
+
+/* 7. Paywall Selected Plan Card in Light Mode */
+html:not(.dark) [id^="paywall_plan_"].bg-amber-500\/10 {
+  background-color: #fffbeb !important;
+  border-color: #d97706 !important;
+  box-shadow: 0 4px 14px 0 rgba(217, 119, 6, 0.15) !important;
+}
+
+/* 8. Text Selection & Focus Ring */
+html:not(.dark) ::selection {
+  background-color: #fde68a !important;
+  color: #78350f !important;
+}
+
+html:not(.dark) .focus\:border-amber-500:focus {
+  border-color: #d97706 !important;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2) !important;
+}
+
+/* 9. Modal Backdrop Light Overrides */
+html:not(.dark) #workout_details_overlay,
+html:not(.dark) #exercise_detail_modal_overlay,
+html:not(.dark) #paywall_modal_overlay,
+html:not(.dark) #auth_modal_overlay,
+html:not(.dark) #health_sync_overlay,
+html:not(.dark) #active_workout_overlay {
+  background-color: rgba(15, 23, 42, 0.65) !important;
+}

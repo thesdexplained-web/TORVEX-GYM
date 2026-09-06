@@ -1,0 +1,7 @@
+{
+  "name": "TORVEX GYM",
+  "description": "Train. Track. Transform. High-performance workout tracking, active session management, progress metrics, and fitness coaching.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

@@ -1,0 +1,105 @@
+{
+  "entities": {
+    "Workout": {
+      "title": "Workout",
+      "description": "Pre-configured and structured workout routines categorized by kinetic target and difficulty.",
+      "type": "object",
+      "properties": {
+        "workoutId": { "type": "string", "description": "Unique workout identifier" },
+        "title": { "type": "string", "description": "Display title of the workout" },
+        "description": { "type": "string", "description": "Protocol overview and objectives" },
+        "category": { "type": "string", "description": "Discipline category (e.g. Full Body, Strength, Cardio)" },
+        "difficulty": { "type": "string", "enum": ["Beginner", "Intermediate", "Advanced"] },
+        "durationMinutes": { "type": "number", "description": "Estimated duration in minutes" },
+        "estimatedCalories": { "type": "number", "description": "Estimated calories burned" },
+        "imageUrl": { "type": "string", "description": "Hero display image URL" },
+        "isPremiumOnly": { "type": "boolean", "description": "Whether routine requires active subscription" }
+      },
+      "required": ["workoutId", "title", "category", "difficulty", "durationMinutes"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with cumulative metrics, active streaks, and goals.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Firebase Auth UID" },
+        "displayName": { "type": "string", "description": "User full name" },
+        "emailAddress": { "type": "string", "description": "User email address" },
+        "currentStreak": { "type": "number", "description": "Current consecutive days streak" },
+        "longestStreak": { "type": "number", "description": "Record streak" },
+        "totalWorkoutCount": { "type": "number", "description": "Total completed workouts" },
+        "totalWorkoutMinutes": { "type": "number", "description": "Total workout duration in minutes" },
+        "totalCaloriesBurned": { "type": "number", "description": "Total active calories burned" }
+      },
+      "required": ["userId", "displayName", "emailAddress"]
+    },
+    "WorkoutSession": {
+      "title": "WorkoutSession",
+      "description": "Completed or recorded live workout session log with exercise sets.",
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string", "description": "Unique session ID" },
+        "userId": { "type": "string", "description": "Athlete UID" },
+        "workoutId": { "type": "string", "description": "Source workout ID" },
+        "workoutTitle": { "type": "string", "description": "Workout name" },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "completedAt": { "type": "string", "format": "date-time" },
+        "durationSeconds": { "type": "number" },
+        "caloriesBurned": { "type": "number" },
+        "completionStatus": { "type": "string", "enum": ["in_progress", "completed", "abandoned"] }
+      },
+      "required": ["sessionId", "userId", "workoutId", "startedAt", "durationSeconds"]
+    },
+    "DailyChallenge": {
+      "title": "DailyChallenge",
+      "description": "Daily athletic challenge for consistency points.",
+      "type": "object",
+      "properties": {
+        "challengeId": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "challengeDate": { "type": "string" },
+        "metric": { "type": "string" },
+        "targetValue": { "type": "number" },
+        "currentValue": { "type": "number" },
+        "completionStatus": { "type": "string", "enum": ["pending", "completed"] }
+      },
+      "required": ["challengeId", "title", "challengeDate", "targetValue", "currentValue"]
+    },
+    "UserSubscription": {
+      "title": "UserSubscription",
+      "description": "Active subscription status and entitlement record.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "entitlement": { "type": "string", "enum": ["free", "premium"] },
+        "status": { "type": "string" },
+        "planType": { "type": "string" },
+        "trialActive": { "type": "boolean" }
+      },
+      "required": ["userId", "entitlement", "status"]
+    }
+  },
+  "firestore": {
+    "/workouts/{workoutId}": {
+      "schema": "Workout",
+      "description": "Global workout routines library accessible to all athletes."
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Private user account profile and metrics."
+    },
+    "/users/{userId}/sessions/{sessionId}": {
+      "schema": "WorkoutSession",
+      "description": "Chronological workout sessions performed by this athlete."
+    },
+    "/users/{userId}/daily_challenges/{challengeId}": {
+      "schema": "DailyChallenge",
+      "description": "Per-user daily challenges and completion tracking."
+    },
+    "/users/{userId}/subscription/current": {
+      "schema": "UserSubscription",
+      "description": "Active membership and entitlement status for this user."
+    }
+  }
+}
