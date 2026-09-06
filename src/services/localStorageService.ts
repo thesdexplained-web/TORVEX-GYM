@@ -150,4 +150,30 @@ export class LocalStorageService {
       console.error('Failed to clear cached user profile', e);
     }
   }
+
+  // Persisted Subscription Caching
+  static getCachedSubscription(): any | null {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.OFFLINE_SUBSCRIPTION_CACHE);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  static saveCachedSubscription(sub: any): void {
+    try {
+      localStorage.setItem(STORAGE_KEYS.OFFLINE_SUBSCRIPTION_CACHE, JSON.stringify(sub));
+    } catch (e) {
+      console.error('Failed to cache subscription', e);
+    }
+  }
+
+  static clearCachedSubscription(): void {
+    try {
+      localStorage.removeItem(STORAGE_KEYS.OFFLINE_SUBSCRIPTION_CACHE);
+    } catch (e) {
+      console.error('Failed to clear cached subscription', e);
+    }
+  }
 }

@@ -9,6 +9,7 @@ import { ActiveWorkoutModal } from './components/ActiveWorkoutModal';
 import { PaywallModal } from './components/PaywallModal';
 import { SubscriptionSimulator } from './components/SubscriptionSimulator';
 import { HealthSyncModal } from './components/HealthSyncModal';
+import { LegalModal, LegalTab } from './components/LegalModal';
 
 // Views
 import { HomeView } from './components/views/HomeView';
@@ -34,6 +35,7 @@ import {
   UserSubscription, 
   WorkoutNote 
 } from './types';
+import { INITIAL_WORKOUTS } from './data/initialCatalog';
 import { Sparkles, Info, X } from 'lucide-react';
 
 export default function App() {
@@ -58,7 +60,7 @@ function TorvexAppContent() {
 
   // Core domain data
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [workouts, setWorkouts] = useState<Workout[]>(INITIAL_WORKOUTS);
   const [favoriteWorkoutIds, setFavoriteWorkoutIds] = useState<string[]>([]);
   const [sessions, setSessions] = useState<WorkoutSession[]>([]);
   const [dailyChallenges, setDailyChallenges] = useState<DailyChallenge[]>([]);
@@ -76,8 +78,34 @@ function TorvexAppContent() {
   const [isPaywallOpen, setIsPaywallOpen] = useState<boolean>(false);
   const [isSimulatorOpen, setIsSimulatorOpen] = useState<boolean>(false);
   const [isHealthSyncOpen, setIsHealthSyncOpen] = useState<boolean>(false);
+  const [isLegalModalOpen, setIsLegalModalOpen] = useState<boolean>(false);
+  const [legalModalTab, setLegalModalTab] = useState<LegalTab>('privacy');
   const [inspectingWorkout, setInspectingWorkout] = useState<Workout | null>(null);
   const [activeWorkoutToRun, setActiveWorkoutToRun] = useState<Workout | null>(null);
+
+  const handleOpenLegal = (tab: LegalTab = 'privacy') => {
+    setLegalModalTab(tab);
+    setIsLegalModalOpen(true);
+  };
+
+  // Deep-link check for public store compliance URLs (?page=privacy or #terms)
+  useEffect(() => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const pageParam = urlParams.get('page') || window.location.hash.replace('#', '').toLowerCase();
+      if (pageParam === 'privacy' || pageParam === 'privacy-policy') {
+        handleOpenLegal('privacy');
+      } else if (pageParam === 'terms' || pageParam === 'eula' || pageParam === 'tos') {
+        handleOpenLegal('terms');
+      } else if (pageParam === 'support' || pageParam === 'faq' || pageParam === 'contact') {
+        handleOpenLegal('support');
+      } else if (pageParam === 'delete' || pageParam === 'deletion' || pageParam === 'delete-account') {
+        handleOpenLegal('deletion');
+      }
+    } catch {
+      // Graceful fallback for sandboxed iframes
+    }
+  }, []);
 
   // Initialize Sync Service & Online Listeners
   useEffect(() => {
@@ -294,7 +322,7 @@ function TorvexAppContent() {
 
       {/* Main Screen Views Content Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 pt-6 pb-20 md:pb-12">
-        {activeTab === 'home' && (
+        <div className={activeTab === 'home' ? 'block' : 'hidden'}>
           <HomeView
             userProfile={userProfile}
             workouts={workouts}
@@ -306,9 +334,9 @@ function TorvexAppContent() {
             onOpenAuth={() => setIsAuthModalOpen(true)}
             onOpenPaywall={() => setIsPaywallOpen(true)}
           />
-        )}
+        </div>
 
-        {activeTab === 'workouts' && (
+        <div className={activeTab === 'workouts' ? 'block' : 'hidden'}>
           <WorkoutsView
             workouts={workouts}
             favoriteIds={favoriteWorkoutIds}
@@ -316,26 +344,26 @@ function TorvexAppContent() {
             onSelectWorkout={setInspectingWorkout}
             onToggleFavorite={handleToggleFavorite}
           />
-        )}
+        </div>
 
-        {activeTab === 'progress' && (
+        <div className={activeTab === 'progress' ? 'block' : 'hidden'}>
           <ProgressView
             userProfile={userProfile}
             sessions={sessions}
             onNavigateWorkouts={() => setActiveTab('workouts')}
           />
-        )}
+        </div>
 
-        {activeTab === 'coach' && (
+        <div className={activeTab === 'coach' ? 'block' : 'hidden'}>
           <AiCoachView
             userProfile={userProfile}
             subscription={subscription}
             onOpenPaywall={() => setIsPaywallOpen(true)}
             onNavigateWorkouts={() => setActiveTab('workouts')}
           />
-        )}
+        </div>
 
-        {activeTab === 'profile' && (
+        <div className={activeTab === 'profile' ? 'block' : 'hidden'}>
           <ProfileView
             userProfile={userProfile}
             achievements={achievements}
@@ -345,10 +373,11 @@ function TorvexAppContent() {
             onOpenPaywall={() => setIsPaywallOpen(true)}
             onOpenSimulator={() => setIsSimulatorOpen(true)}
             onOpenHealthSync={() => setIsHealthSyncOpen(true)}
+            onOpenLegal={handleOpenLegal}
             onProfileUpdated={setUserProfile}
             onNoteAdded={(n) => setNotes(prev => [n, ...prev])}
           />
-        )}
+        </div>
       </main>
 
       {/* Workout Details Modal */}
@@ -396,6 +425,7 @@ function TorvexAppContent() {
           setIsPaywallOpen(false);
           setIsSimulatorOpen(true);
         }}
+        onOpenLegal={handleOpenLegal}
       />
 
       {/* QA Subscription Simulator Modal */}
@@ -413,6 +443,20 @@ function TorvexAppContent() {
         isOpen={isHealthSyncOpen}
         userId={userProfile ? userProfile.userId : 'guest'}
         onClose={() => setIsHealthSyncOpen(false)}
+      />
+
+      {/* Store Compliance & Legal Documentation Modal */}
+      <LegalModal
+        isOpen={isLegalModalOpen}
+        initialTab={legalModalTab}
+        onClose={() => setIsLegalModalOpen(false)}
+        userId={userProfile?.userId}
+        onAccountDeleted={() => {
+          setUserProfile(null);
+          setSubscription(null);
+          setSessions([]);
+          setNotes([]);
+        }}
       />
     </div>
   );

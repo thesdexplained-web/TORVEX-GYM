@@ -21,6 +21,7 @@ interface PaywallModalProps {
   onClose: () => void;
   onSuccess: (sub: UserSubscription) => void;
   onOpenSimulator?: () => void;
+  onOpenLegal?: (tab: 'privacy' | 'terms') => void;
 }
 
 export const PaywallModal: React.FC<PaywallModalProps> = ({
@@ -28,7 +29,8 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
   userId,
   onClose,
   onSuccess,
-  onOpenSimulator
+  onOpenSimulator,
+  onOpenLegal
 }) => {
   const products = SubscriptionService.getProducts();
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlanType>('yearly');
@@ -215,6 +217,26 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
                 <span>QA State Simulator</span>
               </button>
             )}
+          </div>
+
+          <div className="flex items-center justify-center gap-3 text-[11px] text-zinc-400 pt-1">
+            <button
+              id="paywall_link_terms"
+              type="button"
+              onClick={() => onOpenLegal && onOpenLegal('terms')}
+              className="hover:text-amber-400 underline underline-offset-2 transition-colors"
+            >
+              Terms of Use (EULA)
+            </button>
+            <span className="text-zinc-600">•</span>
+            <button
+              id="paywall_link_privacy"
+              type="button"
+              onClick={() => onOpenLegal && onOpenLegal('privacy')}
+              className="hover:text-amber-400 underline underline-offset-2 transition-colors"
+            >
+              Privacy Policy
+            </button>
           </div>
 
           <p className="text-[10px] text-zinc-500 text-center leading-tight">

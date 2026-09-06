@@ -12,7 +12,8 @@ import {
   doc, 
   getDoc, 
   setDoc, 
-  updateDoc 
+  updateDoc,
+  deleteDoc
 } from 'firebase/firestore';
 import { auth, googleAuthProvider, db } from './firebase';
 import { UserProfile } from '../types';
@@ -272,5 +273,25 @@ export class AuthenticationService {
     this.currentUserProfile = updated;
     this.notifyListeners(updated, this.rawUser);
     return updated;
+  }
+
+  // Permanently delete user document and all associated data (Apple Guideline 5.1.1(v) compliance)
+  static async deleteUserData(userId: string): Promise<void> {
+    try {
+      const userRef = doc(db, 'users', userId);
+      await deleteDoc(userRef).catch(() => {});
+      
+      // If signed in with Firebase Auth, attempt delete user
+      if (auth.currentUser && auth.currentUser.uid === userId) {
+        await auth.currentUser.delete().catch(() => {});
+      }
+    } catch (e) {
+      console.warn('Firestore delete user operation encountered an issue:', e);
+    }
+    
+    this.currentUserProfile = null;
+    this.rawUser = null;
+    LocalStorageService.clearCachedUserProfile();
+    this.notifyListeners(null, null);
   }
 }

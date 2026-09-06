@@ -246,6 +246,89 @@ html:not(.dark) .focus\:border-amber-500:focus {
 }
 
 /* 9. Modal Backdrop Light Overrides */
+html:not(.dark) #workout_secondary_filters {
+  background-color: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+html:not(.dark) #workout_secondary_filters .text-slate-700 {
+  color: #334155 !important;
+}
+
+html:not(.dark) #workout_secondary_filters .bg-slate-200\/80 {
+  background-color: #e2e8f0 !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+/* ============================================================
+   FEATURED WORKOUT ROUTINE HERO CARD (HOME SCREEN)
+   Permanently protects dark photo contrast in both Light & Dark modes
+   ============================================================ */
+#home_featured_card,
+html:not(.dark) #home_featured_card {
+  background-color: #09090b !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+#home_featured_card #home_featured_title,
+html:not(.dark) #home_featured_card #home_featured_title {
+  color: #ffffff !important;
+}
+
+#home_featured_card #home_featured_desc,
+html:not(.dark) #home_featured_card #home_featured_desc {
+  color: #e2e8f0 !important;
+}
+
+#home_featured_card .featured-stat-item,
+html:not(.dark) #home_featured_card .featured-stat-item,
+#home_featured_card .featured-stat-item span,
+html:not(.dark) #home_featured_card .featured-stat-item span {
+  color: #cbd5e1 !important;
+}
+
+#home_featured_card #home_featured_badge_routine,
+html:not(.dark) #home_featured_card #home_featured_badge_routine {
+  background-color: #f59e0b !important;
+  color: #09090b !important;
+}
+
+#home_featured_card #home_featured_badge_category,
+html:not(.dark) #home_featured_card #home_featured_badge_category {
+  background-color: rgba(15, 23, 42, 0.8) !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+#home_featured_card #home_featured_start_button,
+html:not(.dark) #home_featured_card #home_featured_start_button {
+  background-color: #f59e0b !important;
+  color: #09090b !important;
+}
+
+#home_featured_card #home_featured_start_button span,
+html:not(.dark) #home_featured_card #home_featured_start_button span {
+  color: #09090b !important;
+}
+
+/* Image Card Overlay Badges & Stats in Workouts & Catalogs */
+.card-media-category-badge,
+html:not(.dark) .card-media-category-badge {
+  background-color: rgba(15, 23, 42, 0.85) !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.card-media-stat-pill,
+html:not(.dark) .card-media-stat-pill,
+.card-media-stat-pill span,
+html:not(.dark) .card-media-stat-pill span {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+  color: #f1f5f9 !important;
+}
+
 html:not(.dark) #workout_details_overlay,
 html:not(.dark) #exercise_detail_modal_overlay,
 html:not(.dark) #paywall_modal_overlay,
@@ -254,3 +337,4 @@ html:not(.dark) #health_sync_overlay,
 html:not(.dark) #active_workout_overlay {
   background-color: rgba(15, 23, 42, 0.65) !important;
 }
+

@@ -19,12 +19,18 @@ import {
   Check, 
   BookOpenCheck,
   ShieldCheck,
-  Plus
+  Plus,
+  Lock,
+  FileText,
+  HelpCircle,
+  Trash2,
+  ChevronRight
 } from 'lucide-react';
 import { UserProfile, Achievement, UserSubscription, WorkoutNote } from '../../types';
 import { useTheme } from '../../context/ThemeContext';
 import { AuthenticationService } from '../../services/authService';
 import { WorkoutService } from '../../services/workoutService';
+import { LegalTab } from '../LegalModal';
 
 interface ProfileViewProps {
   userProfile: UserProfile | null;
@@ -35,6 +41,7 @@ interface ProfileViewProps {
   onOpenPaywall: () => void;
   onOpenSimulator: () => void;
   onOpenHealthSync: () => void;
+  onOpenLegal?: (tab: LegalTab) => void;
   onProfileUpdated: (p: UserProfile) => void;
   onNoteAdded: (note: WorkoutNote) => void;
 }
@@ -48,6 +55,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   onOpenPaywall,
   onOpenSimulator,
   onOpenHealthSync,
+  onOpenLegal,
   onProfileUpdated,
   onNoteAdded
 }) => {
@@ -467,6 +475,98 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               CONNECTED
             </span>
           </div>
+        </div>
+      </div>
+
+      {/* App Store, Google Play & Legal Compliance */}
+      <div id="profile_legal_compliance_card" className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 sm:p-6 shadow-xl space-y-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-base font-black uppercase tracking-tight text-white flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-amber-500" />
+              <span>Legal & App Store Compliance</span>
+            </h3>
+            <p className="text-xs text-zinc-400 mt-0.5">
+              Official policies, EULA terms, developer support, and privacy tools
+            </p>
+          </div>
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
+            v1.0.0
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+          <button
+            id="profile_open_privacy_btn"
+            type="button"
+            onClick={() => onOpenLegal && onOpenLegal('privacy')}
+            className="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/60 transition-all text-left group"
+          >
+            <div className="flex items-center gap-2.5">
+              <div className="p-1.5 rounded-lg bg-zinc-900 text-zinc-300 group-hover:text-amber-400 transition-colors">
+                <Lock className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="font-bold text-white">Privacy Policy</h4>
+                <p className="text-[11px] text-zinc-500">Data safety, telemetry & health encryption</p>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-300 transition-colors" />
+          </button>
+
+          <button
+            id="profile_open_terms_btn"
+            type="button"
+            onClick={() => onOpenLegal && onOpenLegal('terms')}
+            className="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/60 transition-all text-left group"
+          >
+            <div className="flex items-center gap-2.5">
+              <div className="p-1.5 rounded-lg bg-zinc-900 text-zinc-300 group-hover:text-amber-400 transition-colors">
+                <FileText className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="font-bold text-white">Terms of Use (EULA)</h4>
+                <p className="text-[11px] text-zinc-500">Standard Apple & Google license agreement</p>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-300 transition-colors" />
+          </button>
+
+          <button
+            id="profile_open_support_btn"
+            type="button"
+            onClick={() => onOpenLegal && onOpenLegal('support')}
+            className="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900/60 transition-all text-left group"
+          >
+            <div className="flex items-center gap-2.5">
+              <div className="p-1.5 rounded-lg bg-zinc-900 text-zinc-300 group-hover:text-amber-400 transition-colors">
+                <HelpCircle className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="font-bold text-white">Support & Contact</h4>
+                <p className="text-[11px] text-zinc-500">thesdexplained@gmail.com • FAQ</p>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-zinc-300 transition-colors" />
+          </button>
+
+          <button
+            id="profile_open_deletion_btn"
+            type="button"
+            onClick={() => onOpenLegal && onOpenLegal('deletion')}
+            className="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-rose-950/40 hover:border-rose-800 hover:bg-rose-950/10 transition-all text-left group"
+          >
+            <div className="flex items-center gap-2.5">
+              <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-400 group-hover:text-rose-300 transition-colors">
+                <Trash2 className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="font-bold text-rose-300">Data & Account Deletion</h4>
+                <p className="text-[11px] text-zinc-500">Apple 5.1.1(v) permanent erase request</p>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-rose-400 transition-colors" />
+          </button>
         </div>
       </div>
     </div>

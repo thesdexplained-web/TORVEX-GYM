@@ -4,6 +4,7 @@ import '../../core/constants/app_colors.dart';
 import '../../bloc/subscription/subscription_bloc.dart';
 import '../../bloc/subscription/subscription_event.dart';
 import '../../bloc/subscription/subscription_state.dart';
+import '../legal/legal_sheet.dart';
 
 class PaywallDialog extends StatefulWidget {
   const PaywallDialog({Key? key}) : super(key: key);
@@ -178,6 +179,38 @@ class _PaywallDialogState extends State<PaywallDialog> {
                     ),
                   ),
                 ),
+              ),
+              const SizedBox(height: 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => LegalSheet.show(context, initialTabIndex: 1),
+                    child: Text(
+                      'Terms of Use (EULA)',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: isDark ? AppColors.darkTextMuted : AppColors.lightTextMuted,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text('•', style: TextStyle(color: isDark ? AppColors.darkTextMuted : AppColors.lightTextMuted)),
+                  ),
+                  GestureDetector(
+                    onTap: () => LegalSheet.show(context, initialTabIndex: 0),
+                    child: Text(
+                      'Privacy Policy',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: isDark ? AppColors.darkTextMuted : AppColors.lightTextMuted,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           );

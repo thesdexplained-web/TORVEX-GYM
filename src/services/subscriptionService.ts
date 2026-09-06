@@ -7,6 +7,7 @@ import {
   SubscriptionStatus 
 } from '../types';
 import { SUBSCRIPTION_PRODUCTS } from '../data/initialCatalog';
+import { LocalStorageService } from './localStorageService';
 
 export class SubscriptionService {
   private static cachedSubscription: UserSubscription | null = null;
@@ -24,21 +25,33 @@ export class SubscriptionService {
 
   private static notify(sub: UserSubscription) {
     this.cachedSubscription = sub;
+    LocalStorageService.saveCachedSubscription(sub);
     this.listeners.forEach(l => l(sub));
   }
 
   /**
-   * Get subscription from users/{userId}/subscription or initialize Free
+   * Get subscription from users/{userId}/subscription/current or initialize Free
    */
   static async getSubscription(userId: string): Promise<UserSubscription> {
     try {
-      const subRef = doc(db, 'users', userId, 'subscription');
-      const snap = await getDoc(subRef);
+      // 1. Check local cache first
+      const cached = LocalStorageService.getCachedSubscription();
+      if (cached && cached.userId === userId) {
+        this.cachedSubscription = cached;
+      }
 
-      if (snap.exists()) {
+      // 2. Fetch from Firestore users/{userId}/subscription/current (valid 4-segment doc reference)
+      const subRef = doc(db, 'users', userId, 'subscription', 'current');
+      const snap = await getDoc(subRef).catch(() => null);
+
+      if (snap && snap.exists()) {
         const sub = snap.data() as UserSubscription;
-        this.cachedSubscription = sub;
+        this.notify(sub);
         return sub;
+      }
+
+      if (this.cachedSubscription && this.cachedSubscription.userId === userId) {
+        return this.cachedSubscription;
       }
 
       // Default initial free subscription
@@ -55,11 +68,12 @@ export class SubscriptionService {
         lastSyncedAt: new Date().toISOString()
       };
 
-      await setDoc(subRef, defaultSub);
-      this.cachedSubscription = defaultSub;
+      await setDoc(subRef, defaultSub).catch(() => {});
+      this.notify(defaultSub);
       return defaultSub;
-    } catch {
-      const fallback: UserSubscription = {
+    } catch (err) {
+      console.warn('Subscription fetch fallback to local state:', err);
+      const fallback: UserSubscription = this.cachedSubscription || {
         userId,
         entitlement: 'free',
         status: 'free',
@@ -71,7 +85,7 @@ export class SubscriptionService {
         willRenew: false,
         lastSyncedAt: new Date().toISOString()
       };
-      this.cachedSubscription = fallback;
+      this.notify(fallback);
       return fallback;
     }
   }
@@ -111,8 +125,13 @@ export class SubscriptionService {
       lastSyncedAt: now.toISOString()
     };
 
-    const subRef = doc(db, 'users', userId, 'subscription');
-    await setDoc(subRef, updatedSub, { merge: true }).catch(() => {});
+    try {
+      const subRef = doc(db, 'users', userId, 'subscription', 'current');
+      await setDoc(subRef, updatedSub, { merge: true }).catch(() => {});
+    } catch (e) {
+      console.warn('Cloud sync for trial deferred:', e);
+    }
+
     this.notify(updatedSub);
     return updatedSub;
   }
@@ -141,8 +160,13 @@ export class SubscriptionService {
       lastSyncedAt: now.toISOString()
     };
 
-    const subRef = doc(db, 'users', userId, 'subscription');
-    await setDoc(subRef, updatedSub, { merge: true }).catch(() => {});
+    try {
+      const subRef = doc(db, 'users', userId, 'subscription', 'current');
+      await setDoc(subRef, updatedSub, { merge: true }).catch(() => {});
+    } catch (e) {
+      console.warn('Cloud sync for purchase deferred:', e);
+    }
+
     this.notify(updatedSub);
     return updatedSub;
   }
@@ -206,8 +230,13 @@ export class SubscriptionService {
       lastSyncedAt: now.toISOString()
     };
 
-    const subRef = doc(db, 'users', userId, 'subscription');
-    await setDoc(subRef, updatedSub, { merge: true }).catch(() => {});
+    try {
+      const subRef = doc(db, 'users', userId, 'subscription', 'current');
+      await setDoc(subRef, updatedSub, { merge: true }).catch(() => {});
+    } catch (e) {
+      console.warn('Subscription Simulator cloud sync deferred:', e);
+    }
+
     this.notify(updatedSub);
     return updatedSub;
   }

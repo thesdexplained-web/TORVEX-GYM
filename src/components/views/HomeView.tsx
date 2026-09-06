@@ -173,45 +173,77 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
       {/* Primary Featured Workout Card */}
       {featuredWorkout && (
-        <div className="relative rounded-2xl border border-zinc-800 overflow-hidden bg-zinc-900 shadow-2xl">
-          <div className="relative h-64 sm:h-72 w-full">
+        <div 
+          id="home_featured_card" 
+          className="relative rounded-2xl border border-zinc-800/80 overflow-hidden shadow-2xl"
+          style={{ backgroundColor: '#09090b' }}
+        >
+          <div className="relative min-h-[17rem] sm:min-h-[19rem] h-auto sm:h-76 w-full flex flex-col justify-between p-4 sm:p-6">
             <img
               src={featuredWorkout.imageUrl}
               alt={featuredWorkout.title}
-              className="w-full h-full object-cover object-center"
+              className="absolute inset-0 w-full h-full object-cover object-center"
               referrerPolicy="no-referrer"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-black/30" />
+            {/* Deep rich dark gradient scrim - guaranteed contrast in both light & dark themes */}
+            <div 
+              className="absolute inset-0 pointer-events-none" 
+              style={{
+                background: 'linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.72) 45%, rgba(0, 0, 0, 0.35) 100%)'
+              }}
+            />
 
-            <div className="absolute top-4 left-4 flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-amber-500 text-zinc-950">
+            {/* Top Badges */}
+            <div className="relative z-10 flex items-center gap-2">
+              <span 
+                id="home_featured_badge_routine"
+                className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm"
+                style={{ backgroundColor: '#f59e0b', color: '#09090b' }}
+              >
                 Recommended Routine
               </span>
-              <span className="text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-zinc-900/80 backdrop-blur-md border border-zinc-700 text-zinc-300">
+              <span 
+                id="home_featured_badge_category"
+                className="text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full border shadow-sm backdrop-blur-md"
+                style={{
+                  backgroundColor: 'rgba(15, 23, 42, 0.8)',
+                  color: '#f8fafc',
+                  borderColor: 'rgba(255, 255, 255, 0.25)'
+                }}
+              >
                 {featuredWorkout.category}
               </span>
             </div>
 
-            <div className="absolute bottom-4 left-4 right-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+            {/* Bottom Content Info */}
+            <div className="relative z-10 mt-12 sm:mt-0 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div className="space-y-1.5">
+                <h2 
+                  id="home_featured_title"
+                  className="text-xl sm:text-2xl font-black tracking-tight drop-shadow-md"
+                  style={{ color: '#ffffff' }}
+                >
                   {featuredWorkout.title}
                 </h2>
-                <p className="text-xs sm:text-sm text-zinc-300 mt-1 max-w-lg line-clamp-2">
+                <p 
+                  id="home_featured_desc"
+                  className="text-xs sm:text-sm max-w-lg line-clamp-2 leading-relaxed"
+                  style={{ color: '#e2e8f0' }}
+                >
                   {featuredWorkout.description}
                 </p>
 
-                <div className="flex items-center gap-4 mt-3 text-xs text-zinc-300 font-mono">
-                  <div className="flex items-center gap-1">
-                    <Clock className="w-4 h-4 text-zinc-400" />
+                <div className="flex items-center gap-4 pt-1 text-xs font-mono">
+                  <div className="featured-stat-item flex items-center gap-1.5" style={{ color: '#cbd5e1' }}>
+                    <Clock className="w-4 h-4 text-slate-400" />
                     <span>{featuredWorkout.durationMinutes} min</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Flame className="w-4 h-4 text-amber-500" />
-                    <span>{featuredWorkout.estimatedCalories} kcal</span>
+                  <div className="featured-stat-item flex items-center gap-1.5" style={{ color: '#fbbf24' }}>
+                    <Flame className="w-4 h-4 text-amber-400 fill-amber-400" />
+                    <span style={{ color: '#cbd5e1' }}>{featuredWorkout.estimatedCalories} kcal</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Dumbbell className="w-4 h-4 text-zinc-400" />
+                  <div className="featured-stat-item flex items-center gap-1.5" style={{ color: '#cbd5e1' }}>
+                    <Dumbbell className="w-4 h-4 text-slate-400" />
                     <span>{featuredWorkout.exerciseCount} exercises</span>
                   </div>
                 </div>
@@ -220,10 +252,15 @@ export const HomeView: React.FC<HomeViewProps> = ({
               <button
                 id="home_featured_start_button"
                 onClick={() => onSelectWorkout(featuredWorkout)}
-                className="shrink-0 bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-zinc-950 font-black py-3 px-6 rounded-xl transition-all shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 text-sm uppercase tracking-wider"
+                className="shrink-0 font-black py-3 px-6 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 text-sm uppercase tracking-wider active:scale-[0.98]"
+                style={{
+                  backgroundColor: '#f59e0b',
+                  color: '#09090b',
+                  boxShadow: '0 8px 16px -2px rgba(245, 158, 11, 0.35)'
+                }}
               >
-                <Play className="w-4 h-4 fill-zinc-950" />
-                <span>Start Workout</span>
+                <Play className="w-4 h-4" style={{ fill: '#09090b', color: '#09090b' }} />
+                <span style={{ color: '#09090b' }}>Start Workout</span>
               </button>
             </div>
           </div>

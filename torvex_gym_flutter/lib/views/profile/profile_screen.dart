@@ -5,6 +5,7 @@ import '../../core/services/storage_service.dart';
 import '../../bloc/subscription/subscription_bloc.dart';
 import '../../bloc/subscription/subscription_state.dart';
 import '../subscription/paywall_dialog.dart';
+import '../legal/legal_sheet.dart';
 
 class ProfileScreen extends StatefulWidget {
   final Function(bool) onToggleTheme;
@@ -130,6 +131,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _buildSwitchTile('Local Training Alerts', 'Push reminders for scheduled workout sessions', _pushNotifications, (val) {
             setState(() => _pushNotifications = val);
           }, isDark),
+          const SizedBox(height: 24),
+          const Text('LEGAL & APP STORE COMPLIANCE', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900)),
+          const SizedBox(height: 12),
+          _buildActionTile(
+            title: 'Privacy Policy & Data Rights',
+            subtitle: 'GDPR, CCPA & encrypted biometric security',
+            icon: Icons.lock_outline_rounded,
+            onTap: () => LegalSheet.show(context, initialTabIndex: 0),
+            isDark: isDark,
+          ),
+          _buildActionTile(
+            title: 'Terms of Use (Standard EULA)',
+            subtitle: 'Apple & Google subscription licensing terms',
+            icon: Icons.description_outlined,
+            onTap: () => LegalSheet.show(context, initialTabIndex: 1),
+            isDark: isDark,
+          ),
+          _buildActionTile(
+            title: 'Help & Athlete Support',
+            subtitle: 'thesdexplained@gmail.com • Operational Status',
+            icon: Icons.help_outline_rounded,
+            onTap: () => LegalSheet.show(context, initialTabIndex: 2),
+            isDark: isDark,
+          ),
+          _buildActionTile(
+            title: 'Permanent Data & Account Deletion',
+            subtitle: 'Apple Guideline 5.1.1(v) permanent wipe',
+            icon: Icons.delete_forever_rounded,
+            iconColor: Colors.redAccent,
+            onTap: () => LegalSheet.show(context, initialTabIndex: 3),
+            isDark: isDark,
+          ),
           const SizedBox(height: 32),
           Center(
             child: Text(
@@ -158,6 +191,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         activeColor: AppColors.primaryAmber,
         contentPadding: EdgeInsets.zero,
         onChanged: onChanged,
+      ),
+    );
+  }
+
+  Widget _buildActionTile({
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    Color? iconColor,
+    required VoidCallback onTap,
+    required bool isDark,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkCard : AppColors.lightCard,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: isDark ? AppColors.darkCardBorder : AppColors.lightCardBorder),
+      ),
+      child: ListTile(
+        onTap: onTap,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        leading: Icon(icon, color: iconColor ?? AppColors.primaryAmber, size: 22),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+        subtitle: Text(subtitle, style: TextStyle(fontSize: 11, color: isDark ? AppColors.darkTextMuted : AppColors.lightTextMuted)),
+        trailing: Icon(Icons.chevron_right, color: isDark ? AppColors.darkTextMuted : AppColors.lightTextMuted, size: 20),
       ),
     );
   }
