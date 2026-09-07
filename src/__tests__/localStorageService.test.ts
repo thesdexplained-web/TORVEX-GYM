@@ -88,4 +88,36 @@ describe('LocalStorageService Unit Tests', () => {
     LocalStorageService.clearCachedUserProfile();
     expect(LocalStorageService.getCachedUserProfile()).toBeNull();
   });
+
+  it('should toggle and persist favorite workout IDs locally', () => {
+    const userId = 'user_fav_test_01';
+    expect(LocalStorageService.getFavoriteWorkoutIds(userId)).toEqual([]);
+
+    const res1 = LocalStorageService.toggleFavoriteWorkoutId('workout_push_day', userId);
+    expect(res1.isFav).toBe(true);
+    expect(res1.updatedIds).toContain('workout_push_day');
+    expect(LocalStorageService.getFavoriteWorkoutIds(userId)).toContain('workout_push_day');
+
+    const res2 = LocalStorageService.toggleFavoriteWorkoutId('workout_push_day', userId);
+    expect(res2.isFav).toBe(false);
+    expect(res2.updatedIds).not.toContain('workout_push_day');
+    expect(LocalStorageService.getFavoriteWorkoutIds(userId)).not.toContain('workout_push_day');
+  });
+
+  it('should save and retrieve personal workout notes locally', () => {
+    const userId = 'user_notes_test_01';
+    const mockNote = {
+      noteId: 'note_123',
+      userId,
+      title: 'Leg Day Personal Record',
+      content: 'Hit 140kg squat for 5 reps clean form.',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    LocalStorageService.saveNote(mockNote, userId);
+    const notes = LocalStorageService.getNotes(userId);
+    expect(notes.length).toBe(1);
+    expect(notes[0].title).toBe('Leg Day Personal Record');
+  });
 });

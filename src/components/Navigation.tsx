@@ -100,24 +100,13 @@ export const Navigation: React.FC<NavigationProps> = ({
 
           {/* Right Action Items */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Sync State Badge */}
-            <div className="flex items-center gap-1 text-[11px] font-mono px-2 py-1 rounded-lg bg-zinc-900 border border-zinc-800">
-              {isOnline ? (
-                <>
-                  <Wifi className="w-3.5 h-3.5 text-emerald-400" />
-                  {pendingSyncCount > 0 && (
-                    <span className="text-amber-400 font-bold">
-                      {pendingSyncCount} queued
-                    </span>
-                  )}
-                </>
-              ) : (
-                <div className="flex items-center gap-1 text-rose-400">
-                  <WifiOff className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Offline</span>
-                </div>
-              )}
-            </div>
+            {/* Offline Status Badge (only when offline) */}
+            {!isOnline && (
+              <div className="flex items-center gap-1 text-[11px] font-mono px-2 py-1 rounded-lg bg-zinc-900 border border-zinc-800 text-rose-400">
+                <WifiOff className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Offline</span>
+              </div>
+            )}
 
             {/* Premium CTA or Badge */}
             {isPremium ? (
@@ -135,7 +124,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 className="hidden sm:flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-black text-xs px-3 py-1.5 rounded-xl transition-all shadow-md shadow-amber-500/20 uppercase tracking-wider"
               >
                 <Zap className="w-3.5 h-3.5 fill-zinc-950" />
-                <span>7-Day Trial</span>
+                <span>Plans</span>
               </button>
             )}
 

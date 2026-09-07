@@ -10,8 +10,6 @@ import {
   Sparkles, 
   HeartPulse, 
   Bell, 
-  Sun, 
-  Moon, 
   LogOut, 
   CreditCard, 
   Cpu, 
@@ -27,9 +25,9 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { UserProfile, Achievement, UserSubscription, WorkoutNote } from '../../types';
-import { useTheme } from '../../context/ThemeContext';
 import { AuthenticationService } from '../../services/authService';
 import { WorkoutService } from '../../services/workoutService';
+import { SubscriptionService } from '../../services/subscriptionService';
 import { LegalTab } from '../LegalModal';
 
 interface ProfileViewProps {
@@ -59,8 +57,6 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   onProfileUpdated,
   onNoteAdded
 }) => {
-  const { theme, toggleTheme } = useTheme();
-
   // Edit profile state
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(userProfile?.displayName || '');
@@ -109,7 +105,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
     await AuthenticationService.signOut();
   };
 
-  const isPremium = subscription?.entitlement === 'premium';
+  const isPremium = SubscriptionService.isPremium(subscription);
+  const freeMonthStatus = SubscriptionService.getFreeMonthStatus(subscription);
   const unlockedCount = achievements.filter(a => a.isUnlocked).length;
 
   return (
@@ -177,7 +174,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 onClick={onOpenAuth}
                 className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs shadow-md shadow-amber-500/20"
               >
-                Sign In / Register
+                Sign In
               </button>
             )}
           </div>
@@ -244,22 +241,32 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-                Membership & RevenueCat Entitlement
+                Membership Status
               </span>
               <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded font-mono ${
-                isPremium ? 'bg-amber-500 text-zinc-950' : 'bg-zinc-800 text-zinc-400'
+                subscription?.status === 'premium_active'
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                  : freeMonthStatus.isWithinFreeMonth
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                  : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
               }`}>
-                {subscription?.status.replace('_', ' ').toUpperCase() || 'FREE'}
+                {subscription?.status === 'premium_active'
+                  ? 'ACTIVE PRO SUBSCRIBER'
+                  : freeMonthStatus.isWithinFreeMonth
+                  ? `FREE MONTH • ${freeMonthStatus.daysRemaining}D LEFT`
+                  : 'SUBSCRIPTION EXPIRED'}
               </span>
             </div>
 
             <h3 className="text-lg font-black text-white">
-              {isPremium ? 'Torvex Pro Athlete Pass' : 'Torvex Standard Pass'}
+              {isPremium ? 'Torvex Pro Athlete Pass' : 'Torvex Subscription Expired'}
             </h3>
             <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
-              {isPremium
-                ? 'Full access to all advanced splits, AI Coach periodization, and cross-device telemetry.'
-                : 'Free tier active. Upgrade to unlock all advanced hypertrophy splits and AI consultation.'}
+              {subscription?.status === 'premium_active'
+                ? 'Full uninterrupted Pro access to all workout splits, AI Coach periodization, and cross-device telemetry.'
+                : freeMonthStatus.isWithinFreeMonth
+                ? `1-Month Free Access is active (${freeMonthStatus.daysRemaining} days remaining). All Pro features, splits, and AI coach are 100% unlocked.`
+                : 'Your 30-day free access has ended. Choose a Monthly, 6-Month, or Yearly plan to continue using the application.'}
             </p>
           </div>
 
@@ -269,7 +276,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               onClick={onOpenPaywall}
               className="bg-amber-500 hover:bg-amber-400 active:bg-amber-600 text-zinc-950 font-bold text-xs px-4 py-2.5 rounded-xl transition-all shadow-sm"
             >
-              {isPremium ? 'Manage Membership' : 'Upgrade • 7 Days Free'}
+              {subscription?.status === 'premium_active' ? 'Manage Subscription' : 'View Subscription Plans'}
             </button>
 
             <button
@@ -302,8 +309,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
           </div>
 
           <div className="mt-6 pt-4 border-t border-zinc-800 flex items-center justify-between">
-            <span className="text-xs text-zinc-500 font-mono">
-              Bridge: Firebase Sync Engine
+            <span className="text-xs text-zinc-400">
+              Automatic background sync
             </span>
             <button
               id="profile_connected_services_button"
@@ -439,42 +446,6 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               No workout notes added yet. Click "+ New Note" to save training cues.
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Global Settings (Theme & Environment) */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 sm:p-6 shadow-xl">
-        <h3 className="text-base font-black uppercase tracking-tight text-white mb-4">
-          Application Preferences
-        </h3>
-
-        <div className="space-y-3 text-xs">
-          <div className="flex items-center justify-between p-3 bg-zinc-950 rounded-xl border border-zinc-800">
-            <div className="flex items-center gap-3">
-              {theme === 'dark' ? <Moon className="w-4 h-4 text-amber-400" /> : <Sun className="w-4 h-4 text-amber-500" />}
-              <div>
-                <h4 className="font-bold text-white">Visual Interface Theme</h4>
-                <p className="text-[11px] text-zinc-400">Current: {theme === 'dark' ? 'Athletic Dark' : 'Deliberate Light'}</p>
-              </div>
-            </div>
-            <button
-              id="theme_toggle_button"
-              onClick={toggleTheme}
-              className="bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-3.5 py-1.5 rounded-lg font-semibold transition-colors"
-            >
-              Switch to {theme === 'dark' ? 'Light' : 'Dark'}
-            </button>
-          </div>
-
-          <div className="flex items-center justify-between p-3 bg-zinc-950 rounded-xl border border-zinc-800">
-            <div>
-              <h4 className="font-bold text-white">Cloud Database Architecture</h4>
-              <p className="text-[11px] text-zinc-500 font-mono">Project: torvex-gym • Status: Active</p>
-            </div>
-            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              CONNECTED
-            </span>
-          </div>
         </div>
       </div>
 

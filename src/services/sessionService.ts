@@ -9,7 +9,7 @@ import {
   limit, 
   updateDoc 
 } from 'firebase/firestore';
-import { db } from './firebase';
+import { db, auth } from './firebase';
 import { WorkoutSession, UserProfile } from '../types';
 import { LocalStorageService } from './localStorageService';
 import { AchievementService } from './achievementService';
@@ -28,13 +28,25 @@ export class SessionService {
    * Uses doc(db, 'users', userId, 'workout_sessions', sessionId) for idempotent writes.
    */
   static async recordWorkoutSession(session: WorkoutSession): Promise<void> {
+    // 1. Immediately cache to local storage so user history is never lost or delayed
+    LocalStorageService.addSessionToHistory(session, session.userId);
+
+    // 2. Sync to Firestore if user is authenticated as owner
     try {
-      const sessionRef = doc(db, 'users', session.userId, 'workout_sessions', session.sessionId);
-      const dataToSave = {
-        ...session,
-        syncedAt: new Date().toISOString()
-      };
-      await setDoc(sessionRef, dataToSave, { merge: true });
+      if (auth.currentUser && auth.currentUser.uid === session.userId) {
+        const sessionRef = doc(db, 'users', session.userId, 'workout_sessions', session.sessionId);
+        const dataToSave = {
+          ...session,
+          syncedAt: new Date().toISOString()
+        };
+        await setDoc(sessionRef, dataToSave, { merge: true });
+      } else {
+        // Queue for synchronization when user authenticates
+        LocalStorageService.addToSyncQueue({
+          type: 'SAVE_WORKOUT_SESSION',
+          payload: session
+        });
+      }
     } catch (error) {
       console.warn('Network write failed, adding session to offline sync queue:', error);
       LocalStorageService.addToSyncQueue({
@@ -163,19 +175,43 @@ export class SessionService {
   }
 
   /**
-   * Fetch user workout history from users/{userId}/workout_sessions
+   * Fetch user workout history from local storage cache with Firestore synchronization.
+   * Prevents permission-denied errors when unauthenticated or offline.
    */
   static async getUserSessions(userId: string): Promise<WorkoutSession[]> {
+    const cachedSessions = LocalStorageService.getCachedSessionsHistory(userId) as WorkoutSession[];
+
+    // If unauthenticated or userId does not match current auth, return cached sessions without throwing
+    if (!auth.currentUser || auth.currentUser.uid !== userId) {
+      return cachedSessions;
+    }
+
     try {
       const sessColl = collection(db, 'users', userId, 'workout_sessions');
       const q = query(sessColl, orderBy('startedAt', 'desc'), limit(50));
       const snap = await getDocs(q);
-      const list: WorkoutSession[] = [];
-      snap.forEach(d => list.push(d.data() as WorkoutSession));
-      return list;
+      const cloudList: WorkoutSession[] = [];
+      snap.forEach(d => {
+        const item = d.data() as WorkoutSession;
+        if (item && item.sessionId) {
+          cloudList.push(item);
+        }
+      });
+
+      // Merge cloud list with local cached sessions (cloud takes precedence for same sessionId)
+      const sessionMap = new Map<string, WorkoutSession>();
+      cachedSessions.forEach(s => sessionMap.set(s.sessionId, s));
+      cloudList.forEach(s => sessionMap.set(s.sessionId, s));
+
+      const merged = Array.from(sessionMap.values()).sort(
+        (a, b) => new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime()
+      );
+
+      LocalStorageService.saveCachedSessionsHistory(merged, userId);
+      return merged;
     } catch (error) {
-      console.warn('Failed to load session history from firestore:', error);
-      return [];
+      // Return cached sessions on network or permission errors silently
+      return cachedSessions;
     }
   }
 }

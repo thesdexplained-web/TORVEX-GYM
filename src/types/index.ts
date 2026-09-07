@@ -3,7 +3,7 @@
  * Professional, strongly-typed fitness domain model
  */
 
-export type WorkoutDifficulty = 'Beginner' | 'Intermediate' | 'Advanced';
+export type WorkoutDifficulty = 'Zero Level' | 'Beginner' | 'Intermediate' | 'Advanced';
 
 export type WorkoutCategory = 
   | 'Full Body' 
@@ -12,7 +12,10 @@ export type WorkoutCategory =
   | 'Strength' 
   | 'Cardio' 
   | 'Core' 
-  | 'Mobility';
+  | 'Mobility'
+  | 'Yoga';
+
+export type ExerciseDifficulty = 'Zero Level' | 'Beginner' | 'Intermediate' | 'Advanced';
 
 export interface Exercise {
   id: string;
@@ -20,13 +23,17 @@ export interface Exercise {
   category: WorkoutCategory;
   targetMuscles: string[];
   equipmentNeeded: string;
+  difficulty?: ExerciseDifficulty;
+  durationSeconds?: number;
   defaultSets: number;
   defaultReps: number;
   defaultWeightKg: number;
   defaultRestSeconds: number;
+  description?: string;
   instructions: string[];
-  tips: string;
+  tips?: string;
   imageUrl?: string;
+  gifUrl?: string;
 }
 
 export interface WorkoutExerciseItem {
@@ -37,8 +44,11 @@ export interface WorkoutExerciseItem {
   reps: number;
   weightKg: number;
   restSeconds: number;
+  difficulty?: ExerciseDifficulty;
   instructions: string[];
+  description?: string;
   imageUrl?: string;
+  gifUrl?: string;
 }
 
 export interface Workout {
@@ -190,6 +200,23 @@ export interface UserSubscription {
   autoRenew: boolean;
   willRenew: boolean;
   lastSyncedAt?: string;
+  freeMonthActive?: boolean;
+  freeMonthStart?: string;
+  freeMonthEnd?: string;
+}
+
+export interface FreeMonthStatus {
+  isWithinFreeMonth: boolean;
+  isExpired: boolean;
+  daysRemaining: number;
+  startDate: string;
+  endDate: string;
+  reminderNotice: {
+    tier: 15 | 7 | 3 | 1 | 0;
+    title: string;
+    message: string;
+    badgeClass: string;
+  } | null;
 }
 
 export interface SubscriptionProduct {

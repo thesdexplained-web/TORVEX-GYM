@@ -184,20 +184,20 @@ export const HealthSyncModal: React.FC<HealthSyncModalProps> = ({
         </div>
 
         {/* Pinned Footer Actions */}
-        <div className="shrink-0 p-4 sm:p-5 bg-zinc-950 border-t border-zinc-800 flex items-center justify-between">
+        <div className="shrink-0 p-3.5 sm:p-5 bg-zinc-950 border-t border-zinc-800 flex flex-wrap items-center justify-between gap-2">
           <button
             id="health_sync_all_button"
             disabled={syncingAll}
             onClick={handleSyncNow}
-            className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-colors disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${syncingAll ? 'animate-spin text-amber-400' : ''}`} />
-            <span>{syncingAll ? 'Syncing Telemetry...' : 'Sync Telemetry Now'}</span>
+            <span>{syncingAll ? 'Syncing...' : 'Sync Telemetry Now'}</span>
           </button>
 
           <button
             onClick={onClose}
-            className="bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-5 py-2.5 rounded-xl text-xs transition-colors shadow-sm"
+            className="bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-5 py-2.5 rounded-xl text-xs transition-colors shadow-sm ml-auto"
           >
             Done
           </button>

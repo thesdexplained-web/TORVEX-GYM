@@ -25,6 +25,7 @@ interface HomeViewProps {
   subscription: UserSubscription | null;
   onSelectWorkout: (workout: Workout) => void;
   onNavigateTab: (tab: string) => void;
+  onSelectDiscipline?: (category: string) => void;
   onOpenAuth: () => void;
   onOpenPaywall: () => void;
 }
@@ -37,6 +38,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   subscription,
   onSelectWorkout,
   onNavigateTab,
+  onSelectDiscipline,
   onOpenAuth,
   onOpenPaywall
 }) => {
@@ -277,7 +279,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
             <p className="text-xs text-zinc-400">Target specific kinetic chains and training adaptations</p>
           </div>
           <button
-            onClick={() => onNavigateTab('workouts')}
+            onClick={() => onSelectDiscipline ? onSelectDiscipline('All') : onNavigateTab('workouts')}
             className="text-xs font-bold text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors"
           >
             <span>View All</span>
@@ -285,11 +287,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
           {WORKOUT_CATEGORIES.map(cat => (
             <button
               key={cat.id}
-              onClick={() => onNavigateTab('workouts')}
+              onClick={() => onSelectDiscipline ? onSelectDiscipline(cat.name) : onNavigateTab('workouts')}
               className="p-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-850 border border-zinc-800 hover:border-zinc-700 text-left transition-all group"
             >
               <span className="text-xs font-bold text-white block group-hover:text-amber-400 transition-colors">

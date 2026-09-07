@@ -43,11 +43,19 @@ html:not(.dark) .bg-zinc-800\/80 {
 }
 
 /* Neutral Typography */
-html:not(.dark) .text-white,
-html:not(.dark) .text-zinc-100,
-html:not(.dark) .text-zinc-200 {
+html:not(.dark) .text-white:not(.hero-media-text):not([data-hero-text="true"]),
+html:not(.dark) .text-zinc-100:not(.hero-media-text):not([data-hero-text="true"]),
+html:not(.dark) .text-zinc-200:not(.hero-media-text):not([data-hero-text="true"]) {
   color: #09090b !important;
 }
+
+/* Media overlay text protection */
+.hero-media-text,
+[data-hero-text="true"],
+.card-media-stat-pill span {
+  color: #ffffff !important;
+}
+
 
 html:not(.dark) .text-zinc-300,
 html:not(.dark) .text-zinc-400 {
@@ -337,4 +345,49 @@ html:not(.dark) #health_sync_overlay,
 html:not(.dark) #active_workout_overlay {
   background-color: rgba(15, 23, 42, 0.65) !important;
 }
+
+/* Workout Details Modal Light Mode Polish */
+html:not(.dark) #workout_details_overlay .modal-content-card {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+#workout_details_overlay .hero-media-container *[data-hero-text="true"],
+#workout_details_overlay .hero-title,
+#workout_details_overlay .hero-badge,
+html:not(.dark) #workout_details_overlay .hero-media-container *[data-hero-text="true"],
+html:not(.dark) #workout_details_overlay .hero-title,
+html:not(.dark) #workout_details_overlay .hero-badge {
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9) !important;
+}
+
+html:not(.dark) #workout_details_overlay .metric-stat-box {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+html:not(.dark) #workout_details_overlay .metric-stat-box .stat-val {
+  color: #0f172a !important;
+}
+
+html:not(.dark) #workout_details_overlay .protocol-text {
+  color: #334155 !important;
+}
+
+html:not(.dark) #workout_details_overlay .exercise-card-item {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+html:not(.dark) #workout_details_overlay .exercise-card-item h4 {
+  color: #0f172a !important;
+}
+
+html:not(.dark) #workout_details_overlay .exercise-card-item span.text-amber-400 {
+  color: #b45309 !important;
+}
+
 

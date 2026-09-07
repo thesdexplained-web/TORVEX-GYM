@@ -1,618 +1,1232 @@
-import { Exercise, Workout } from '../types';
+import { Exercise } from '../types';
 
 export const COMPREHENSIVE_EXERCISES: Exercise[] = [
-  // CHEST
+  // ==========================================
+  // YOGA (Dynamic Flows, Postures & Restoration)
+  // ==========================================
   {
-    id: 'ex-flat-bench-press',
-    name: 'Flat Barbell Bench Press',
-    category: 'Upper Body',
-    targetMuscles: ['Chest', 'Triceps', 'Anterior Deltoid'],
-    equipmentNeeded: 'Barbell & Flat Bench',
-    defaultSets: 4,
-    defaultReps: 8,
-    defaultWeightKg: 80,
-    defaultRestSeconds: 90,
-    instructions: [
-      'Retract scapula into bench and plant feet firmly on the ground.',
-      'Unrack bar directly over shoulders with wrists straight.',
-      'Lower under control to touch sternum with 2-second eccentric cadence.',
-      'Drive upwards through the palms, keeping glutes glued to the bench.'
-    ],
-    tips: 'Avoid flaring elbows at 90 degrees; tuck elbows at roughly 45-60 degrees to preserve rotator cuffs.',
-    imageUrl: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'ex-incline-db-press',
-    name: 'Incline Dumbbell Press',
-    category: 'Upper Body',
-    targetMuscles: ['Clavicular Head (Upper Chest)', 'Triceps', 'Front Delts'],
-    equipmentNeeded: 'Incline Bench (30°) & Dumbbells',
-    defaultSets: 4,
-    defaultReps: 10,
-    defaultWeightKg: 28,
-    defaultRestSeconds: 75,
-    instructions: [
-      'Set bench to 30-45 degree incline.',
-      'Kick dumbbells up into start position with locked core.',
-      'Lower dumbbells until upper arms break parallel to floor.',
-      'Press up in a converging arc without banging dumbbells together.'
-    ],
-    tips: 'A 30-degree incline prioritizes the upper pecs while minimizing front deltoid takeover.',
-    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'ex-cable-chest-fly',
-    name: 'Cable Mid-Chest Flyes',
-    category: 'Upper Body',
-    targetMuscles: ['Pectoralis Major (Sternal Head)', 'Anterior Deltoid'],
-    equipmentNeeded: 'Dual Cable Tower',
+    id: 'ex-yoga-sun-salutation',
+    name: 'Surya Namaskar (Sun Salutation A)',
+    category: 'Yoga',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Full Body', 'Hamstrings', 'Chest', 'Spinal Erectors'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 120,
     defaultSets: 3,
-    defaultReps: 12,
-    defaultWeightKg: 15,
-    defaultRestSeconds: 60,
+    defaultReps: 5,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'A classic 12-movement sequence linking breath with movement to warm the body and improve spinal articulation.',
     instructions: [
-      'Set pulleys at chest height, step forward into staggered stance.',
-      'Keep slight bend in elbows and sweep hands together in wide hugging motion.',
-      'Squeeze pecs hard at peak contraction for 1 second.'
+      'Inhale arms overhead into Urdhva Hastasana (Upward Salute).',
+      'Exhale hinge from hips folding into Uttanasana (Standing Forward Fold).',
+      'Inhale half lift with flat back (Ardha Uttanasana).',
+      'Exhale step or jump to Chaturanga Dandasana (Low Push-Up).',
+      'Inhale upward-facing dog; exhale push back to downward-facing dog for 5 breaths.'
     ],
-    tips: 'Focus on bringing the inner creases of your elbows together rather than just touching your hands.',
-    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop'
+    tips: 'Move synchronously with each inhalation and exhalation without rushing the transitions.',
+    imageUrl: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
   },
   {
-    id: 'ex-weighted-dips',
-    name: 'Weighted Chest Dips',
-    category: 'Upper Body',
-    targetMuscles: ['Lower Chest', 'Triceps', 'Anterior Delts'],
-    equipmentNeeded: 'Parallel Dip Bars & Dip Belt',
+    id: 'ex-yoga-downward-dog',
+    name: 'Adho Mukha Svanasana (Downward Dog)',
+    category: 'Yoga',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Hamstrings', 'Calves', 'Shoulders', 'Lats'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 60,
     defaultSets: 3,
-    defaultReps: 8,
-    defaultWeightKg: 10,
-    defaultRestSeconds: 90,
+    defaultReps: 1,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Foundational yoga inversion that decompresses the lumbar spine, opens posterior chains, and stabilizes the shoulder girdle.',
     instructions: [
-      'Mount dip bars and lean torso forward roughly 30 degrees.',
-      'Descend until elbows reach 90-degree flexion feeling deep chest stretch.',
-      'Press back up forcefully locking out triceps.'
+      'Start on hands and knees with wrists under shoulders and knees under hips.',
+      'Tuck toes, lift knees off floor, and send sitting bones up toward the ceiling.',
+      'Press firmly through knuckles, rotating upper arms outward to broaden chest.',
+      'Pedal feet if needed to release tension in calves and hamstrings.'
     ],
-    tips: 'Forward lean targets the chest, while an upright torso emphasizes triceps.',
-    imageUrl: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?q=80&w=600&auto=format&fit=crop'
+    tips: 'Prioritize lengthening the spine over touching heels to the mat; bend knees slightly if hamstrings feel tight.',
+    imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
   },
   {
-    id: 'ex-pushups-strict',
-    name: 'Strict Tempo Push-Ups',
-    category: 'Upper Body',
-    targetMuscles: ['Chest', 'Triceps', 'Core'],
-    equipmentNeeded: 'Bodyweight',
+    id: 'ex-yoga-warrior-one',
+    name: 'Virabhadrasana I (Warrior I)',
+    category: 'Yoga',
+    difficulty: 'Beginner',
+    targetMuscles: ['Quadriceps', 'Glutes', 'Hip Flexors', 'Shoulders'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 45,
     defaultSets: 3,
-    defaultReps: 20,
+    defaultReps: 2,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Grounding standing posture that increases hip flexor mobility and pelvic stability while building lower body endurance.',
+    instructions: [
+      'From downward dog, step right foot between hands and pivot back heel flat at 45 degrees.',
+      'Inhale sweep torso and arms overhead with palms facing inward.',
+      'Sink front thigh toward parallel, keeping front knee stacked over ankle.',
+      'Square hips toward front of mat and draw lower ribs in.'
+    ],
+    tips: 'Anchor down through the outer edge of the back foot to protect the back knee.',
+    imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
+  },
+  {
+    id: 'ex-yoga-warrior-two',
+    name: 'Virabhadrasana II (Warrior II)',
+    category: 'Yoga',
+    difficulty: 'Beginner',
+    targetMuscles: ['Quadriceps', 'Glute Medius', 'Adductors', 'Deltoids'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 45,
+    defaultSets: 3,
+    defaultReps: 2,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Powerful open-hip standing posture that builds endurance in the shoulders and legs while improving mental concentration.',
+    instructions: [
+      'Take a wide stance, turn front foot forward and back foot perpendicular at 90 degrees.',
+      'Bend front knee to 90 degrees directly tracking over second toe.',
+      'Extend arms parallel to the floor, reaching fingertips in opposite directions.',
+      'Gaze softly over the front middle finger while relaxing shoulders down.'
+    ],
+    tips: 'Keep torso centered vertically over hips without leaning forward over the front knee.',
+    imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/26FmRaL0954p6UjPq/giphy.gif'
+  },
+  {
+    id: 'ex-yoga-warrior-three',
+    name: 'Virabhadrasana III (Warrior III)',
+    category: 'Yoga',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Glutes', 'Hamstrings', 'Core', 'Spinal Erectors'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 45,
+    defaultSets: 3,
+    defaultReps: 4,
     defaultWeightKg: 0,
     defaultRestSeconds: 45,
+    description: 'Dynamic single-leg balancing posture testing vestibular balance, proprioception, and posterior chain endurance.',
     instructions: [
-      'Assume high plank with hands slightly wider than shoulder-width.',
-      'Brace core and glutes like a steel beam.',
-      'Lower chest until 1 inch from floor on a 3-second descent, then explode up.'
+      'From standing, shift weight onto standing leg and micro-bend the knee.',
+      'Hinge forward from hips as back leg lifts straight behind you.',
+      'Form a T-shape with body, keeping hips level to the mat.',
+      'Reach arms forward or alongside body with toes flexed toward floor.'
     ],
-    tips: 'Never let hips sag; maintain rigid spinal neutrality throughout.',
-    imageUrl: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?q=80&w=600&auto=format&fit=crop'
+    tips: 'Fix your visual gaze (drishti) on a stationary spot on the floor to stabilize balance.',
+    imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
+  },
+  {
+    id: 'ex-yoga-triangle',
+    name: 'Utthita Trikonasana (Extended Triangle)',
+    category: 'Yoga',
+    difficulty: 'Beginner',
+    targetMuscles: ['Hamstrings', 'Obliques', 'Groin', 'Hips'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 45,
+    defaultSets: 3,
+    defaultReps: 2,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Lateral standing posture expanding the chest, lengthening the spine, and deepening hamstring mobility.',
+    instructions: [
+      'Take a 3.5-foot stance, front foot pointing forward and back foot at 45 degrees.',
+      'Inhale reach front arm forward over front thigh, hinging at hip joint.',
+      'Lower front hand to shin, ankle, or block while extending rear arm straight up.',
+      'Rotate torso toward ceiling and gaze upward at top thumb.'
+    ],
+    tips: 'Do not lock out the front knee; press through the big toe ball of the front foot.',
+    imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
+  },
+  {
+    id: 'ex-yoga-tree-pose',
+    name: 'Vrikshasana (Tree Pose)',
+    category: 'Yoga',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Calves', 'Ankles', 'Adductors', 'Core'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 45,
+    defaultSets: 3,
+    defaultReps: 2,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Foundational balancing posture enhancing proprioceptive ankle stability, hip opening, and mental poise.',
+    instructions: [
+      'Stand tall in Mountain Pose (Tadasana), shifting weight into left foot.',
+      'Place sole of right foot onto inner left calf or inner left thigh (avoid knee).',
+      'Bring hands to prayer position at heart center or reach arms overhead.',
+      'Hold position with steady deep breaths, then switch legs.'
+    ],
+    tips: 'Press foot into thigh and thigh into foot with equal counter-pressure for stability.',
+    imageUrl: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
+  },
+  {
+    id: 'ex-yoga-cobra-pose',
+    name: 'Bhujangasana (Cobra Pose)',
+    category: 'Yoga',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Spinal Erectors', 'Glutes', 'Chest', 'Shoulders'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 30,
+    defaultSets: 3,
+    defaultReps: 5,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Prone backbend improving spinal flexibility, reversing forward slouch posture, and opening chest muscles.',
+    instructions: [
+      'Lie face down with tops of feet flat on floor and hands under shoulders.',
+      'Hug elbows close to torso and press pelvis firmly into mat.',
+      'Inhale peel chest off floor using back muscles with minimal weight in hands.',
+      'Keep neck long and gaze slightly forward, lowering smoothly on exhale.'
+    ],
+    tips: 'Engage glutes and keep shoulder blades drawn down away from ears.',
+    imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
+  },
+  {
+    id: 'ex-yoga-crow-pose',
+    name: 'Bakasana (Crow Pose Arm Balance)',
+    category: 'Yoga',
+    difficulty: 'Advanced',
+    targetMuscles: ['Wrists', 'Forearms', 'Deltoids', 'Core'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 30,
+    defaultSets: 3,
+    defaultReps: 3,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 60,
+    description: 'Intermediate-to-advanced arm balance demanding wrist conditioning, deep core compression, and shoulder strength.',
+    instructions: [
+      'Squat down, place hands flat on mat shoulder-width apart with fingers spread.',
+      'Place knees high onto the backs of upper triceps.',
+      'Lean chest forward, rounding upper back (cat spine) and engaging core.',
+      'Lift one foot then both feet off mat, balancing entirely on palms.'
+    ],
+    tips: 'Look forward ahead of hands, not straight down, to prevent tipping forward.',
+    imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
+  },
+  {
+    id: 'ex-yoga-pigeon-pose',
+    name: 'Eka Pada Rajakapotasana (Pigeon Pose)',
+    category: 'Yoga',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Glutes', 'Piriformis', 'Psoas', 'Hip Rotators'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 90,
+    defaultSets: 2,
+    defaultReps: 2,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Deep hip opening posture that releases accumulated tension in the piriformis and external rotators.',
+    instructions: [
+      'From plank, bring right knee behind right wrist, shin angled across mat.',
+      'Slide left leg straight back with top of thigh and foot resting on floor.',
+      'Square hips toward front of room and gently walk hands forward.',
+      'Fold torso down toward mat, resting forehead on hands or block for 10 slow breaths.'
+    ],
+    tips: 'Flex the front foot to protect the knee; place a yoga block under right hip if it floats off floor.',
+    imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/26FmRaL0954p6UjPq/giphy.gif'
+  },
+  {
+    id: 'ex-yoga-childs-pose',
+    name: 'Balasana (Restorative Child’s Pose)',
+    category: 'Yoga',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Lower Back', 'Hips', 'Ankles', 'Lats'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 90,
+    defaultSets: 2,
+    defaultReps: 1,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 15,
+    description: 'Calming resting pose providing passive decompression of spinal vertebrae and soothing the parasympathetic nervous system.',
+    instructions: [
+      'Kneel on floor with big toes touching and knees opened wide.',
+      'Sit hips back onto heels and fold torso forward between thighs.',
+      'Rest forehead gently on mat and extend arms long in front with palms face down.',
+      'Breathe deeply into back ribs, expanding torso with each breath.'
+    ],
+    tips: 'Use this posture whenever you need a recovery pause during intense workout sequences.',
+    imageUrl: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
+  },
+  {
+    id: 'ex-yoga-cat-cow',
+    name: 'Marjaryasana-Bitilasana (Cat-Cow Flow)',
+    category: 'Yoga',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Spine', 'Abdominals', 'Neck', 'Thoracic Spine'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 60,
+    defaultSets: 2,
+    defaultReps: 10,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 20,
+    description: 'Synchronized spinal flexion and extension restoring synovial fluid lubrication through each vertebra.',
+    instructions: [
+      'Begin on tabletop with wrists beneath shoulders and knees beneath hips.',
+      'Inhale (Cow): drop belly, lift tailbone, and draw collarbones open gazing forward.',
+      'Exhale (Cat): round spine upward like an arched cat, tuck chin and tailbone.',
+      'Flow smoothly between positions for 10 complete breath cycles.'
+    ],
+    tips: 'Initiate movement from the base of the spine, undulating through vertebrae up into the neck.',
+    imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
   },
 
-  // BACK
+  // ==========================================
+  // CARDIO (Aerobic Conditioning & HIIT)
+  // ==========================================
   {
-    id: 'ex-barbell-deadlift',
+    id: 'ex-cardio-burpees',
+    name: 'Full Chest-to-Floor Burpees',
+    category: 'Cardio',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Full Body', 'Pectorals', 'Quadriceps', 'Core'],
+    equipmentNeeded: 'Bodyweight & Mat',
+    durationSeconds: 45,
+    defaultSets: 4,
+    defaultReps: 15,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 45,
+    description: 'High metabolic output explosive full-body movement spiking heart rate and driving VO2 max improvements.',
+    instructions: [
+      'Stand tall, drop hands to floor and kick feet back into plank.',
+      'Lower chest and thighs completely to floor in control.',
+      'Push up explosively, snap feet forward landing outside hands.',
+      'Drive upwards into a vertical jump, clapping hands behind head.'
+    ],
+    tips: 'Pace your reps steadily; inhale descending, exhale powerfully on the upward jump.',
+    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/26FmRaL0954p6UjPq/giphy.gif'
+  },
+  {
+    id: 'ex-cardio-mountain-climbers',
+    name: 'Rapid Mountain Climbers',
+    category: 'Cardio',
+    difficulty: 'Beginner',
+    targetMuscles: ['Core', 'Hip Flexors', 'Shoulders', 'Cardiovascular'],
+    equipmentNeeded: 'Exercise Mat',
+    durationSeconds: 40,
+    defaultSets: 4,
+    defaultReps: 40,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Dynamic floor cardio sprint that tests shoulder endurance and hip flexor quickness while maintaining anti-rotation core bracing.',
+    instructions: [
+      'Start in high plank with hands under shoulders, body in straight alignment.',
+      'Drive right knee forward toward chest without letting hips pike.',
+      'Quickly switch legs, driving left knee forward as right leg returns.',
+      'Alternate in a rapid, continuous running cadence for the duration.'
+    ],
+    tips: 'Keep hips low and level with shoulders throughout the entire set.',
+    imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
+  },
+  {
+    id: 'ex-cardio-jumping-jacks',
+    name: 'High-Tempo Jumping Jacks',
+    category: 'Cardio',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Calves', 'Deltoids', 'Cardiovascular', 'Adductors'],
+    equipmentNeeded: 'Bodyweight',
+    durationSeconds: 60,
+    defaultSets: 3,
+    defaultReps: 50,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Zero-barrier aerobic conditioning drill that gently warms connective tissue and elevates baseline circulation.',
+    instructions: [
+      'Stand feet together with arms resting at sides.',
+      'Jump feet out shoulder-width apart while sweeping arms overhead.',
+      'Immediately spring back to starting position on balls of feet.',
+      'Maintain an unbroken rhythmic bounce with soft knees.'
+    ],
+    tips: 'Stay light on the balls of your feet to cushion impact on knees and ankles.',
+    imageUrl: 'https://images.unsplash.com/photo-1434596922112-19c563067271?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
+  },
+  {
+    id: 'ex-cardio-high-knees',
+    name: 'High Knees Sprint in Place',
+    category: 'Cardio',
+    difficulty: 'Beginner',
+    targetMuscles: ['Hip Flexors', 'Quadriceps', 'Calves', 'Core'],
+    equipmentNeeded: 'Bodyweight',
+    durationSeconds: 30,
+    defaultSets: 4,
+    defaultReps: 30,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'High-intensity plyometric sprint in place targeting hip flexor power and rapid anaerobic energy turnover.',
+    instructions: [
+      'Stand tall with feet hip-width apart and arms in running position.',
+      'Drive one knee up until thigh is parallel to floor while pumping opposite arm.',
+      'Quickly cycle legs, driving alternating knees high in rapid rhythm.',
+      'Stay on balls of feet with upright chest and braced abdomen.'
+    ],
+    tips: 'Drive knees all the way to hip height rather than kicking heels backward.',
+    imageUrl: 'https://images.unsplash.com/photo-1483721310020-03333e577078?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
+  },
+  {
+    id: 'ex-cardio-box-jumps',
+    name: 'Plyometric Box Jumps',
+    category: 'Cardio',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Quadriceps', 'Glutes', 'Calves', 'Hamstrings'],
+    equipmentNeeded: 'Plyometric Box (24-30 inch)',
+    durationSeconds: 45,
+    defaultSets: 4,
+    defaultReps: 10,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 60,
+    description: 'Explosive triple extension drill developing fast-twitch athletic power and reactive neuromuscular coordination.',
+    instructions: [
+      'Stand 1 foot away from box in athletic ready position.',
+      'Quarter squat, swing arms back, and drive through balls of feet.',
+      'Extend hips, knees, and ankles explosively, swinging arms up.',
+      'Land softly in a quiet squat on top of box with both feet, standing tall before stepping down.'
+    ],
+    tips: 'Always step down one foot at a time to prevent Achilles tendon injury.',
+    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/26FmRaL0954p6UjPq/giphy.gif'
+  },
+  {
+    id: 'ex-cardio-kettlebell-swings',
+    name: 'American / Russian Kettlebell Swings',
+    category: 'Cardio',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Glutes', 'Hamstrings', 'Lower Back', 'Forearms'],
+    equipmentNeeded: 'Kettlebell (16-24 kg)',
+    durationSeconds: 45,
+    defaultSets: 4,
+    defaultReps: 20,
+    defaultWeightKg: 20,
+    defaultRestSeconds: 45,
+    description: 'Dynamic ballistic hip hinge combining cardiovascular threshold conditioning with posterior chain power generation.',
+    instructions: [
+      'Stand with feet wider than shoulders, kettlebell 1 foot in front.',
+      'Hinge hips back, grasp bell with both hands, hike it back between thighs.',
+      'Drive hips forward explosively, snapping knees straight.',
+      'Let momentum float bell to chest height without pulling with arms.'
+    ],
+    tips: 'Power comes entirely from hip snap, not from lifting with your shoulders.',
+    imageUrl: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
+  },
+  {
+    id: 'ex-cardio-skater-hops',
+    name: 'Lateral Plyo Skater Hops',
+    category: 'Cardio',
+    difficulty: 'Beginner',
+    targetMuscles: ['Glute Medius', 'Adductors', 'Quadriceps', 'Core'],
+    equipmentNeeded: 'Bodyweight',
+    durationSeconds: 40,
+    defaultSets: 4,
+    defaultReps: 20,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Frontal plane lateral hopping drill developing side-to-side agility, single-leg deceleration, and cardiovascular output.',
+    instructions: [
+      'Stand on right leg with knee slightly bent.',
+      'Bound laterally to the left, landing softly on left foot while swinging right leg behind.',
+      'Immediately spring off left foot bounding back to right side.',
+      'Coordinate arms with running motion to generate momentum.'
+    ],
+    tips: 'Absorb the landing softly with your hip and knee rather than landing stiff-legged.',
+    imageUrl: 'https://images.unsplash.com/photo-1434596922112-19c563067271?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
+  },
+  {
+    id: 'ex-cardio-jump-rope',
+    name: 'Speed Jump Rope Intervals',
+    category: 'Cardio',
+    difficulty: 'Beginner',
+    targetMuscles: ['Calves', 'Forearms', 'Deltoids', 'Cardiovascular'],
+    equipmentNeeded: 'Speed Jump Rope',
+    durationSeconds: 60,
+    defaultSets: 4,
+    defaultReps: 100,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Classic boxer aerobic staple conditioning calves, wrist speed, and aerobic capacity with minimal joint load.',
+    instructions: [
+      'Hold handles with elbows close to ribs, rope behind heels.',
+      'Rotate wrists smoothly to whip rope over head.',
+      'Jump 1 to 2 inches off floor, clearing rope on balls of feet.',
+      'Maintain an unbroken rhythmic cadence, keeping shoulders relaxed.'
+    ],
+    tips: 'Turn the rope using small circular wrist motions rather than large arm swings.',
+    imageUrl: 'https://images.unsplash.com/photo-1483721310020-03333e577078?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
+  },
+
+  // ==========================================
+  // STRENGTH (Compound Overload & Hypertrophy)
+  // ==========================================
+  {
+    id: 'ex-str-bench-press',
+    name: 'Barbell Flat Bench Press',
+    category: 'Strength',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Pectoralis Major', 'Triceps Brachii', 'Anterior Deltoid'],
+    equipmentNeeded: 'Olympic Barbell & Flat Bench',
+    durationSeconds: 60,
+    defaultSets: 4,
+    defaultReps: 8,
+    defaultWeightKg: 75,
+    defaultRestSeconds: 90,
+    description: 'The definitive horizontal pushing compound movement for upper body mass and raw pressing power.',
+    instructions: [
+      'Lie flat with eyes under racked bar, feet driven flat into floor.',
+      'Retract scapulae tightly and grip bar slightly wider than shoulder width.',
+      'Unrack bar, stabilize over sternum, and inhale as you lower in control.',
+      'Touch lower chest lightly, then drive bar explosively upward to full extension.'
+    ],
+    tips: 'Keep wrists stacked above elbows and maintain a solid arch in your upper back.',
+    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/26FmRaL0954p6UjPq/giphy.gif'
+  },
+  {
+    id: 'ex-str-incline-db-press',
+    name: 'Incline Dumbbell Chest Press',
+    category: 'Strength',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Clavicular Pectoralis', 'Triceps', 'Front Delts'],
+    equipmentNeeded: 'Adjustable Bench (30-deg) & Dumbbells',
+    durationSeconds: 50,
+    defaultSets: 4,
+    defaultReps: 10,
+    defaultWeightKg: 26,
+    defaultRestSeconds: 75,
+    description: 'Targeted upper chest compound builder promoting bilateral symmetry and shoulder joint longevity.',
+    instructions: [
+      'Set bench to 30-45 degrees; kick dumbbells up onto thighs then lie back.',
+      'Press dumbbells up over upper chest with palms angled slightly inward (45 degrees).',
+      'Lower dumbbells slowly until elbows are slightly below bench level.',
+      'Drive dumbbells upward in a converging arc without banging weights together.'
+    ],
+    tips: 'Do not set bench higher than 45 degrees to avoid shifting emphasis to anterior deltoids.',
+    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
+  },
+  {
+    id: 'ex-str-deadlift',
     name: 'Conventional Barbell Deadlift',
     category: 'Strength',
-    targetMuscles: ['Hamstrings', 'Glutes', 'Erector Spinae', 'Lats', 'Traps'],
+    difficulty: 'Advanced',
+    targetMuscles: ['Hamstrings', 'Glutes', 'Spinal Erectors', 'Trapezius', 'Lats'],
     equipmentNeeded: 'Olympic Barbell & Bumper Plates',
+    durationSeconds: 60,
     defaultSets: 4,
     defaultReps: 5,
     defaultWeightKg: 120,
-    defaultRestSeconds: 150,
+    defaultRestSeconds: 120,
+    description: 'The ultimate posterior chain lift building unmatched systemic density, raw pull power, and grip strength.',
     instructions: [
-      'Stance hip-width with bar cutting directly across mid-foot.',
-      'Hinge hips back, grasp bar just outside shins, pull slack out of bar.',
-      'Drive floor away through heels, extending hips and knees simultaneously.'
+      'Stand with mid-foot directly under bar, feet hip-width apart.',
+      'Hinge at hips, grip bar just outside legs with double overhand or mixed grip.',
+      'Pull slack out of bar, wedge hips down, and pull chest tall to lock spine.',
+      'Push the floor away through mid-foot, driving hips forward into full lockout.'
     ],
-    tips: 'Think of pushing the earth down rather than yanking the barbell up.',
-    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop'
+    tips: 'Never let your lower back round; pull your lats tight like you are bending the bar around your shins.',
+    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
   },
   {
-    id: 'ex-barbell-bent-row',
-    name: 'Barbell Bent-Over Row',
-    category: 'Upper Body',
-    targetMuscles: ['Latissimus Dorsi', 'Rhomboids', 'Rear Delts', 'Biceps'],
-    equipmentNeeded: 'Olympic Barbell',
+    id: 'ex-str-back-squat',
+    name: 'Barbell Back Squat (High Bar)',
+    category: 'Strength',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Quadriceps', 'Gluteus Maximus', 'Adductors', 'Core'],
+    equipmentNeeded: 'Squat Rack & Olympic Barbell',
+    durationSeconds: 60,
     defaultSets: 4,
     defaultReps: 8,
-    defaultWeightKg: 70,
+    defaultWeightKg: 95,
     defaultRestSeconds: 90,
+    description: 'Foundational knee-dominant compound movement maximizing quad hypertrophy and lower-body force output.',
     instructions: [
-      'Hinge at hips at roughly 45 degrees with knees softly unlocked.',
-      'Pull bar toward lower abdomen driving elbows back towards ceiling.',
-      'Squeeze scapulae firmly together at top before lowering under control.'
+      'Rest barbell securely across upper trapezius, grip firmly with thumbs over or around bar.',
+      'Step back, set feet slightly wider than shoulders with toes flared 15-30 degrees.',
+      'Take a deep belly breath, brace core 360 degrees, and descend by breaking at knees and hips.',
+      'Hit parallel depth, then reverse direction driving forcefully through mid-foot.'
     ],
-    tips: 'Do not use torso momentum to bounce the weight up; keep lumbar spine locked.',
-    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop'
+    tips: 'Keep chest tall and track knees directly over your toes throughout the descent.',
+    imageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
   },
   {
-    id: 'ex-lat-pulldown',
-    name: 'Wide-Grip Lat Pulldown',
-    category: 'Upper Body',
-    targetMuscles: ['Latissimus Dorsi', 'Teres Major', 'Biceps'],
-    equipmentNeeded: 'Cable Pulldown Machine',
+    id: 'ex-str-romanian-deadlift',
+    name: 'Romanian Deadlift (RDL)',
+    category: 'Strength',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Hamstrings', 'Glutes', 'Erector Spinae'],
+    equipmentNeeded: 'Barbell or Heavy Dumbbells',
+    durationSeconds: 50,
     defaultSets: 4,
     defaultReps: 10,
-    defaultWeightKg: 65,
+    defaultWeightKg: 70,
     defaultRestSeconds: 75,
+    description: 'Premier hamstring and glute builder utilizing a deep eccentric hip hinge under tension.',
     instructions: [
-      'Grasp wide lat bar slightly outside shoulders.',
-      'Lean back 10 degrees, initiate pull by depressing shoulder blades.',
-      'Pull bar to collarbone driving elbows down and slightly inward.'
+      'Stand upright holding bar at thigh level with soft unlock in knees.',
+      'Push hips back horizontally toward wall behind you while keeping bar skimming thighs.',
+      'Lower bar to mid-shin level until hamstrings feel a profound stretch.',
+      'Drive hips forward to return to standing, squeezing glutes hard at the top.'
     ],
-    tips: 'Avoid rocking wildly back and forth. Keep upper torso stationary.',
-    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop'
+    tips: 'Do not bend knees any further once the hinge begins; think hips back, not knees down.',
+    imageUrl: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/26FmRaL0954p6UjPq/giphy.gif'
   },
   {
-    id: 'ex-seated-cable-row',
-    name: 'Seated Cable Row (V-Grip)',
-    category: 'Upper Body',
-    targetMuscles: ['Mid-Back', 'Rhomboids', 'Lats', 'Biceps'],
-    equipmentNeeded: 'Low Row Machine & V-Grip',
-    defaultSets: 3,
-    defaultReps: 12,
-    defaultWeightKg: 60,
-    defaultRestSeconds: 60,
-    instructions: [
-      'Sit tall with knees slightly bent and feet secured on footrests.',
-      'Pull handle to navel while pulling shoulders back and puffing chest.',
-      'Slowly allow handles forward feeling mid-back stretch.'
-    ],
-    tips: 'Pause for 1 full second with chest proud at peak contraction.',
-    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'ex-face-pulls',
-    name: 'Cable Face Pulls',
-    category: 'Upper Body',
-    targetMuscles: ['Rear Deltoids', 'Rotator Cuff', 'Upper Traps'],
-    equipmentNeeded: 'Cable Machine & Rope Attachment',
-    defaultSets: 4,
-    defaultReps: 15,
-    defaultWeightKg: 20,
-    defaultRestSeconds: 45,
-    instructions: [
-      'Set pulley to eye height and grab rope with overhand thumbs-back grip.',
-      'Pull rope towards face separating hands at temple level.',
-      'Finish with external shoulder rotation thumbs pointing behind you.'
-    ],
-    tips: 'Crucial exercise for bulletproofing shoulders and reversing desk posture.',
-    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop'
-  },
-
-  // SHOULDERS
-  {
-    id: 'ex-overhead-barbell-press',
-    name: 'Standing Overhead Barbell Press',
-    category: 'Upper Body',
-    targetMuscles: ['Anterior Deltoids', 'Triceps', 'Upper Chest', 'Core'],
-    equipmentNeeded: 'Olympic Barbell & Squat Rack',
+    id: 'ex-str-overhead-press',
+    name: 'Standing Barbell Overhead Press (OHP)',
+    category: 'Strength',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Anterior & Lateral Deltoids', 'Triceps', 'Upper Traps', 'Core'],
+    equipmentNeeded: 'Olympic Barbell',
+    durationSeconds: 50,
     defaultSets: 4,
     defaultReps: 6,
     defaultWeightKg: 50,
-    defaultRestSeconds: 100,
+    defaultRestSeconds: 90,
+    description: 'Strict vertical pressing benchmark building broad shoulders, triceps power, and full-body rigidity.',
     instructions: [
-      'Rest bar on anterior deltoids with vertical forearms.',
-      'Brace core and glutes, tilt head back slightly to clear chin.',
-      'Press straight up, pushing head forward through window at top lockout.'
+      'Grip bar just outside shoulders, elbows tucked forward under bar at clavicle.',
+      'Squeeze glutes, brace abs, and press bar vertically past chin.',
+      'Push head forward through window once bar clears forehead and lock out overhead.',
+      'Lower bar under control back to clavicle resting position.'
     ],
-    tips: 'Do not hyperextend lumbar spine. Squeeze glutes hard to create a solid kinetic base.',
-    imageUrl: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=600&auto=format&fit=crop'
+    tips: 'Do not hyperextend lower back; maintain tight glute engagement throughout the rep.',
+    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
   },
   {
-    id: 'ex-db-lateral-raise',
-    name: 'Dumbbell Lateral Raise',
-    category: 'Upper Body',
-    targetMuscles: ['Lateral Deltoids (Side Delts)'],
-    equipmentNeeded: 'Dumbbells',
+    id: 'ex-str-barbell-row',
+    name: 'Barbell Bent-Over Row (Pendlay Style)',
+    category: 'Strength',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Latissimus Dorsi', 'Rhomboids', 'Trapezius', 'Biceps'],
+    equipmentNeeded: 'Olympic Barbell & Plates',
+    durationSeconds: 50,
     defaultSets: 4,
-    defaultReps: 12,
-    defaultWeightKg: 12,
-    defaultRestSeconds: 45,
+    defaultReps: 8,
+    defaultWeightKg: 70,
+    defaultRestSeconds: 75,
+    description: 'Heavy horizontal pulling movement expanding back thickness, lat width, and isometric spinal stability.',
     instructions: [
-      'Stand with feet shoulder-width, dumbbells at hips, slight forward hinge.',
-      'Lead with elbows raising arms out to sides until parallel to ground.',
-      'Control the eccentric descent over 2-3 seconds.'
+      'Hinge at hips until torso is roughly 45 degrees or parallel to floor.',
+      'Grip bar with overhand grip slightly wider than knees.',
+      'Pull elbows up and back toward hips, touching lower ribcage.',
+      'Squeeze shoulder blades together at peak contraction, then lower under control.'
     ],
-    tips: 'Pour the water: keep pinkies slightly higher than thumbs to isolate side delts.',
-    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop'
+    tips: 'Pull with your elbows rather than yanking with your hands to fully recruit lats.',
+    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
   },
   {
-    id: 'ex-arnold-press',
-    name: 'Arnold Dumbbell Press',
-    category: 'Upper Body',
-    targetMuscles: ['All 3 Deltoid Heads', 'Triceps'],
-    equipmentNeeded: 'Dumbbells & 90° Bench',
+    id: 'ex-str-pullups',
+    name: 'Strict Bodyweight Pull-Ups',
+    category: 'Strength',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Latissimus Dorsi', 'Biceps', 'Brachialis', 'Upper Back'],
+    equipmentNeeded: 'Pull-Up Bar',
+    durationSeconds: 40,
+    defaultSets: 4,
+    defaultReps: 8,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 90,
+    description: 'Gold standard vertical pulling bodyweight exercise building V-taper lats and grip endurance.',
+    instructions: [
+      'Hang from bar with overhand grip just outside shoulder width (dead hang).',
+      'Depress scapulae downward and initiate pull by driving elbows toward hips.',
+      'Pull until chin clears the bar cleanly without swinging or kipping.',
+      'Lower under strict 2-second eccentric control to a full dead hang.'
+    ],
+    tips: 'Avoid craning your neck forward to reach the bar; think about bringing your chest up to meet the bar.',
+    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
+  },
+  {
+    id: 'ex-str-bulgarian-split-squat',
+    name: 'Bulgarian Split Squats',
+    category: 'Strength',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Quadriceps', 'Glutes', 'Hamstrings', 'Adductors'],
+    equipmentNeeded: 'Bench & Pair of Dumbbells',
+    durationSeconds: 50,
     defaultSets: 3,
     defaultReps: 10,
     defaultWeightKg: 18,
     defaultRestSeconds: 60,
+    description: 'Brutal unilateral lower body builder isolating each quad and glute while fixing left/right strength imbalances.',
     instructions: [
-      'Hold dumbbells at chin height with palms facing your face.',
-      'As you press upward, rotate wrists 180 degrees until palms face forward at top.',
-      'Reverse rotation smoothly as you lower back to chin level.'
+      'Place laces of rear foot on bench behind you, front foot 3 feet in front.',
+      'Hold dumbbells at sides with tall chest and neutral pelvis.',
+      'Lower back knee smoothly toward floor until front thigh reaches parallel.',
+      'Drive up through front heel to return to top position.'
     ],
-    tips: 'Keep movement fluid and continuous through the full rotational path.',
-    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'ex-barbell-shrug',
-    name: 'Barbell Trap Shrugs',
-    category: 'Upper Body',
-    targetMuscles: ['Upper Trapezius', 'Forearms'],
-    equipmentNeeded: 'Olympic Barbell',
-    defaultSets: 4,
-    defaultReps: 12,
-    defaultWeightKg: 90,
-    defaultRestSeconds: 60,
-    instructions: [
-      'Hold barbell with double overhand grip resting on mid-thigh.',
-      'Elevate shoulders straight up towards ears as high as possible.',
-      'Pause for 1 second at peak contraction without rolling shoulders.'
-    ],
-    tips: 'Never roll shoulders backward under load; move vertically to avoid cervical spine strain.',
-    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop'
+    tips: 'Lean torso slightly forward (15 degrees) to load the glute, or stay upright for quad bias.',
+    imageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/26FmRaL0954p6UjPq/giphy.gif'
   },
 
-  // ARMS
+  // ==========================================
+  // MOBILITY (Restoration, Range of Motion & Fascia)
+  // ==========================================
   {
-    id: 'ex-barbell-curl',
-    name: 'Standing Barbell Bicep Curl',
-    category: 'Upper Body',
-    targetMuscles: ['Biceps Brachii', 'Brachialis'],
-    equipmentNeeded: 'Straight Barbell or EZ-Curl Bar',
-    defaultSets: 4,
+    id: 'ex-mob-90-90-hips',
+    name: '90/90 Dynamic Hip Rotations',
+    category: 'Mobility',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Hip Internal Rotators', 'Hip External Rotators', 'Glutes'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 60,
+    defaultSets: 3,
     defaultReps: 10,
-    defaultWeightKg: 35,
-    defaultRestSeconds: 60,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Premier hip capsule opener improving internal and external rotational capacity to unlock squats and deadlifts.',
     instructions: [
-      'Stand with feet shoulder-width, gripping bar with supinated palms.',
-      'Keep elbows pinned tight against sides and curl bar to chest.',
-      'Squeeze biceps hard at top before lowering on 3-second negative.'
+      'Sit on floor with front leg bent at 90 degrees and rear leg bent at 90 degrees.',
+      'Keep torso tall, gently hinge forward over front shin for a glute stretch.',
+      'Sit back upright, lift knees, and sweep both legs across to opposite side without hands if possible.',
+      'Repeat fluidly from left to right for designated repetitions.'
     ],
-    tips: 'Do not swing your lower back. If your torso rocks, reduce the weight.',
-    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop'
+    tips: 'Keep spine upright and avoid rounding the lower back during the transition.',
+    imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
   },
   {
-    id: 'ex-incline-db-curl',
-    name: 'Incline Dumbbell Hammer Curl',
-    category: 'Upper Body',
-    targetMuscles: ['Biceps Long Head', 'Brachioradialis'],
-    equipmentNeeded: 'Incline Bench (45°) & Dumbbells',
+    id: 'ex-mob-worlds-greatest-stretch',
+    name: 'World’s Greatest Stretch',
+    category: 'Mobility',
+    difficulty: 'Beginner',
+    targetMuscles: ['Thoracic Spine', 'Hip Flexors', 'Hamstrings', 'Groin'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 90,
+    defaultSets: 3,
+    defaultReps: 6,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Complete multi-planar warmup mobility sequence addressing ankles, hips, thoracic rotation, and hamstrings.',
+    instructions: [
+      'Step forward into a deep lunge, placing both hands inside front foot.',
+      'Drop back knee lightly, drop inside elbow toward front instep.',
+      'Rotate torso toward front knee and reach arm straight up toward ceiling.',
+      'Place hand down, rock hips back, and straighten front leg for hamstring stretch.'
+    ],
+    tips: 'Follow your reaching hand with your eyes to maximize thoracic rotation.',
+    imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
+  },
+  {
+    id: 'ex-mob-thoracic-rotations',
+    name: 'Side-Lying Thoracic Open Book Rotations',
+    category: 'Mobility',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Thoracic Spine', 'Pectorals', 'Anterior Deltoids'],
+    equipmentNeeded: 'Exercise Mat',
+    durationSeconds: 60,
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 20,
+    description: 'Decompresses mid-back stiffness caused by sitting or heavy pressing, restoring healthy rotational range of motion.',
+    instructions: [
+      'Lie on right side with hips and knees stacked at 90 degrees.',
+      'Extend both arms forward resting palms together on floor.',
+      'Inhale sweep top arm in a wide arc up and over body to left side.',
+      'Rotate thoracic spine allowing shoulder blade to touch floor while keeping knees pinned together.'
+    ],
+    tips: 'Do not allow top knee to slide backward off bottom knee during the rotation.',
+    imageUrl: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
+  },
+  {
+    id: 'ex-mob-ankle-wall-drive',
+    name: 'Knee-to-Wall Ankle Dorsiflexion Mobilization',
+    category: 'Mobility',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Soleus', 'Gastrocnemius', 'Achilles Tendon'],
+    equipmentNeeded: 'Wall',
+    durationSeconds: 60,
     defaultSets: 3,
     defaultReps: 12,
-    defaultWeightKg: 14,
-    defaultRestSeconds: 60,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 20,
+    description: 'Targets closed-chain ankle dorsiflexion mobility essential for deep squat depth without heel lift.',
     instructions: [
-      'Lie back on 45-degree incline bench with arms hanging fully extended.',
-      'Curl dumbbells simultaneously with neutral thumbs-up hammer grip.',
-      'Lower slowly feeling deep long-head stretch at the bottom.'
+      'Stand facing wall in split stance with front toes 3-4 inches from baseboard.',
+      'Keep front heel firmly pinned to floor.',
+      'Drive front knee directly forward over second toe until it touches wall.',
+      'Hold 2 seconds, back off, and pulse into the stretch for designated reps.'
     ],
-    tips: 'Incline placement puts biceps in maximum passive stretch for superior hypertrophy.',
-    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop'
+    tips: 'If heel lifts off floor, move foot slightly closer to wall until mobility improves.',
+    imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/26FmRaL0954p6UjPq/giphy.gif'
   },
   {
-    id: 'ex-rope-pushdown',
-    name: 'Cable Triceps Rope Pushdown',
-    category: 'Upper Body',
-    targetMuscles: ['Triceps Lateral & Medial Heads'],
-    equipmentNeeded: 'High Cable Tower & Rope Attachment',
-    defaultSets: 4,
-    defaultReps: 12,
-    defaultWeightKg: 25,
+    id: 'ex-mob-deep-squat-hold',
+    name: 'Deep Goblet Squat Isometric Prying Hold',
+    category: 'Mobility',
+    difficulty: 'Beginner',
+    targetMuscles: ['Adductors', 'Hips', 'Ankles', 'Thoracic Spine'],
+    equipmentNeeded: 'Light Kettlebell (8kg) or Bodyweight',
+    durationSeconds: 60,
+    defaultSets: 3,
+    defaultReps: 1,
+    defaultWeightKg: 8,
     defaultRestSeconds: 45,
+    description: 'Active bottom-range squat hold using elbows to gently pry adductors and hips open into optimal alignment.',
     instructions: [
-      'Stand with slight forward lean, elbows tucked into flanks.',
-      'Push rope straight down extending elbows fully.',
-      'Spread rope ends apart at bottom for peak contraction.'
+      'Hold light kettlebell at chest and descend into your deepest comfortable squat.',
+      'Place elbows inside knees and press palms together.',
+      'Gently pry knees outward while lifting chest tall and drawing shoulder blades back.',
+      'Shift weight gently from left to right ankle to loosen joint capsules.'
     ],
-    tips: 'Lock upper arms into position; only your forearms should move.',
-    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop'
+    tips: 'Maintain full foot contact (tripod foot) with big toe, pinky toe, and heel pressed firmly down.',
+    imageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
+  },
+
+  // ==========================================
+  // CORE (Anti-Extension, Rotation & Stability)
+  // ==========================================
+  {
+    id: 'ex-core-hanging-leg-raise',
+    name: 'Hanging Straight Leg Raises',
+    category: 'Core',
+    difficulty: 'Advanced',
+    targetMuscles: ['Rectus Abdominis', 'Hip Flexors', 'Grip'],
+    equipmentNeeded: 'Pull-Up Bar',
+    durationSeconds: 40,
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 60,
+    description: 'High-leverage abdominal movement requiring strong posterior pelvic tilt and grip strength.',
+    instructions: [
+      'Hang from bar with overhand grip and legs together in dead hang.',
+      'Posteriorly tilt pelvis and engage lower abs.',
+      'Raise straight legs smoothly until toes touch the bar or reach eye level.',
+      'Lower legs slowly without swinging or kicking back.'
+    ],
+    tips: 'Focus on flexing your spine and tucking your pelvis rather than simply swinging hips.',
+    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
   },
   {
-    id: 'ex-skull-crusher',
-    name: 'EZ-Bar Lying Skullcrushers',
+    id: 'ex-core-plank-pushup',
+    name: 'Plank-to-Pushup Transitions',
+    category: 'Core',
+    difficulty: 'Intermediate',
+    targetMuscles: ['Triceps', 'Core', 'Anterior Deltoids', 'Serratus'],
+    equipmentNeeded: 'Exercise Mat',
+    durationSeconds: 45,
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 45,
+    description: 'Dynamic anti-rotation core exercise challenging upper body pushing endurance and core stiffness.',
+    instructions: [
+      'Start in forearm plank with elbows under shoulders and feet hip-width.',
+      'Place right hand on floor where right elbow was, press up to pushup position.',
+      'Lower back down onto right elbow, then left elbow.',
+      'Alternate leading arm each repetition, keeping hips level to floor.'
+    ],
+    tips: 'Fight rotation in hips; do not sway side to side as you press up.',
+    imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
+  },
+  {
+    id: 'ex-core-deadbug',
+    name: 'Contralateral Deadbug Dynamic Bracing',
+    category: 'Core',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Transverse Abdominis', 'Rectus Abdominis', 'Spine Stabilizers'],
+    equipmentNeeded: 'Yoga Mat',
+    durationSeconds: 45,
+    defaultSets: 3,
+    defaultReps: 16,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 30,
+    description: 'Gold-standard spinal stabilization drill retraining anterior core bracing while limbs extend.',
+    instructions: [
+      'Lie on back with arms pointing to ceiling and knees bent at 90 degrees over hips.',
+      'Press lower back flat into floor eliminating all space under spine.',
+      'Slowly extend right arm overhead and left leg straight out hovering above floor.',
+      'Return to center and switch to left arm and right leg while maintaining glued back.'
+    ],
+    tips: 'If your lower back arches off the mat at any point, do not extend your leg as low.',
+    imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/26FmRaL0954p6UjPq/giphy.gif'
+  },
+  {
+    id: 'ex-core-russian-twist',
+    name: 'Weighted Russian Twists',
+    category: 'Core',
+    difficulty: 'Beginner',
+    targetMuscles: ['Internal & External Obliques', 'Rectus Abdominis'],
+    equipmentNeeded: 'Medicine Ball or Dumbbell (5-10kg)',
+    durationSeconds: 45,
+    defaultSets: 3,
+    defaultReps: 24,
+    defaultWeightKg: 8,
+    defaultRestSeconds: 30,
+    description: 'Rotational core strengthening exercise fortifying oblique muscle groups and athletic rotational power.',
+    instructions: [
+      'Sit on floor, bend knees, and lean torso back to 45-degree angle.',
+      'Hover feet 2 inches off floor for balance.',
+      'Rotate torso smoothly from side to side, tapping weight lightly on floor beside hips.',
+      'Maintain an open chest without hunching shoulders.'
+    ],
+    tips: 'Turn from your ribcage and shoulders, not just swinging your arms side to side.',
+    imageUrl: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
+  },
+  {
+    id: 'ex-core-ab-roller',
+    name: 'Ab Wheel Rollouts from Knees',
+    category: 'Core',
+    difficulty: 'Advanced',
+    targetMuscles: ['Rectus Abdominis', 'Lats', 'Shoulders', 'Transverse Abdominis'],
+    equipmentNeeded: 'Ab Roller Wheel & Mat',
+    durationSeconds: 40,
+    defaultSets: 3,
+    defaultReps: 10,
+    defaultWeightKg: 0,
+    defaultRestSeconds: 60,
+    description: 'Extremely demanding anti-extension exercise stretching the abdominal wall under immense eccentric load.',
+    instructions: [
+      'Kneel on mat holding ab wheel with both hands beneath shoulders.',
+      'Tuck pelvis into posterior pelvic tilt and round upper back slightly.',
+      'Roll wheel forward in a controlled line, lowering torso toward floor.',
+      'Pull back forcefully through abs and lats to return to starting position.'
+    ],
+    tips: 'Do not allow your lumbar spine to sag into hyperextension at the bottom of the rollout.',
+    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
+  },
+
+  // ==========================================
+  // FULL BODY (Athletic Complexes & Cross-Training)
+  // ==========================================
+  {
+    id: 'ex-fb-thrusters',
+    name: 'Barbell / Dumbbell Thrusters',
+    category: 'Full Body',
+    difficulty: 'Advanced',
+    targetMuscles: ['Quadriceps', 'Glutes', 'Deltoids', 'Triceps', 'Core'],
+    equipmentNeeded: 'Olympic Barbell or Pair of Dumbbells',
+    durationSeconds: 50,
+    defaultSets: 4,
+    defaultReps: 10,
+    defaultWeightKg: 40,
+    defaultRestSeconds: 75,
+    description: 'Unbroken front squat to overhead press complex delivering maximum cardiovascular burn and full-body force transfer.',
+    instructions: [
+      'Rack barbell at clavicles with front rack grip, feet shoulder-width.',
+      'Descend into a full front squat, keeping elbows high.',
+      'Drive up explosively out of squat; as hips extend, channel momentum into pressing bar overhead.',
+      'Lock out overhead, lower bar back to front rack, and immediately descend into next squat.'
+    ],
+    tips: 'Use the upward momentum of your legs to propel the bar overhead rather than pressing with arms alone.',
+    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
+  },
+  {
+    id: 'ex-fb-manmakers',
+    name: 'Dumbbell Manmaker Complex',
+    category: 'Full Body',
+    difficulty: 'Advanced',
+    targetMuscles: ['Chest', 'Back', 'Quads', 'Shoulders', 'Core'],
+    equipmentNeeded: 'Pair of Hex Dumbbells (12-20kg)',
+    durationSeconds: 60,
+    defaultSets: 3,
+    defaultReps: 8,
+    defaultWeightKg: 16,
+    defaultRestSeconds: 90,
+    description: 'Grueling full-body tactical complex merging pushups, renegade rows, squat cleans, and overhead thrusters.',
+    instructions: [
+      'Start in plank gripping hex dumbbells on floor.',
+      'Perform a pushup, row right dumbbell to hip, perform pushup, row left dumbbell to hip.',
+      'Jump feet forward outside dumbbells, clean them to shoulders while descending into squat.',
+      'Drive up out of squat into an overhead thruster press, then return to floor.'
+    ],
+    tips: 'Use stable hex dumbbells to prevent rolling when performing pushups and rows on the ground.',
+    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/26FmRaL0954p6UjPq/giphy.gif'
+  },
+  {
+    id: 'ex-fb-turkish-getup',
+    name: 'Kettlebell Turkish Get-Up',
+    category: 'Full Body',
+    difficulty: 'Advanced',
+    targetMuscles: ['Shoulder Stabilizers', 'Core', 'Glutes', 'Hips'],
+    equipmentNeeded: 'Kettlebell (12-20kg)',
+    durationSeconds: 90,
+    defaultSets: 3,
+    defaultReps: 3,
+    defaultWeightKg: 16,
+    defaultRestSeconds: 60,
+    description: 'Ancient full-body movement transitioning from lying to standing while balancing a vertical weight overhead.',
+    instructions: [
+      'Lie on back with kettlebell pressed locked out in right arm, right knee bent.',
+      'Roll onto left elbow, press up onto left palm, lift hips into bridge.',
+      'Sweep left leg under into a half-kneeling lunge.',
+      'Stand upright while keeping kettlebell locked out overhead, then reverse steps to floor.'
+    ],
+    tips: 'Never take your eyes off the kettlebell overhead throughout the entire movement.',
+    imageUrl: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
+  },
+
+  // ==========================================
+  // UPPER BODY & ARMS (Isolation & Accessory)
+  // ==========================================
+  {
+    id: 'ex-ub-bicep-curl',
+    name: 'Standing Barbell Bicep Curl',
     category: 'Upper Body',
-    targetMuscles: ['Triceps Long Head'],
-    equipmentNeeded: 'EZ-Bar & Flat Bench',
+    difficulty: 'Beginner',
+    targetMuscles: ['Biceps Brachii', 'Brachialis', 'Forearms'],
+    equipmentNeeded: 'EZ-Bar or Straight Olympic Barbell',
+    durationSeconds: 40,
     defaultSets: 3,
     defaultReps: 10,
     defaultWeightKg: 30,
     defaultRestSeconds: 60,
+    description: 'Foundational bicep mass builder allowing heavy progressive overload across both heads of the bicep.',
     instructions: [
-      'Lie on flat bench with EZ-bar held directly over forehead.',
-      'Hinge at elbows lowering bar towards top of head or slightly behind bench.',
-      'Extend forearms back to starting position squeezing triceps.'
+      'Stand tall with feet hip-width, grip barbell underhand shoulder-width.',
+      'Pin elbows firmly to sides of ribcage.',
+      'Curl bar up toward chest in a smooth arc, squeezing biceps hard at peak.',
+      'Lower bar in a strict 2-second eccentric cadence without swinging hips.'
     ],
-    tips: 'Angling upper arms 10 degrees back maintains constant tension at top lockout.',
-    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop'
-  },
-
-  // LEGS
-  {
-    id: 'ex-barbell-squat',
-    name: 'Barbell Back Squat',
-    category: 'Lower Body',
-    targetMuscles: ['Quadriceps', 'Glutes', 'Hamstrings', 'Core'],
-    equipmentNeeded: 'Squat Rack & Olympic Barbell',
-    defaultSets: 4,
-    defaultReps: 6,
-    defaultWeightKg: 100,
-    defaultRestSeconds: 120,
-    instructions: [
-      'Rest bar securely on upper traps or rear delts with proud chest.',
-      'Unrack, take 2 steps back, feet shoulder-width with toes flared 15 degrees.',
-      'Break at hips and knees simultaneously, descending until hip crease breaks parallel.',
-      'Drive powerfully through mid-foot to stand.'
-    ],
-    tips: 'Keep knees tracking directly in line with toes throughout entire ROM.',
-    imageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop'
+    tips: 'Keep wrists locked straight; do not let elbows flare or drift backward.',
+    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
   },
   {
-    id: 'ex-romanian-deadlift',
-    name: 'Barbell Romanian Deadlift (RDL)',
-    category: 'Lower Body',
-    targetMuscles: ['Hamstrings', 'Glutes', 'Lower Back'],
-    equipmentNeeded: 'Barbell',
-    defaultSets: 4,
-    defaultReps: 8,
-    defaultWeightKg: 80,
-    defaultRestSeconds: 90,
-    instructions: [
-      'Hold barbell with double overhand grip, stand tall with unlocked knees.',
-      'Push hips back toward wall behind you while sliding bar down along shins.',
-      'Stop when hamstrings are under maximum loaded stretch.',
-      'Drive hips forward to return to standing lockout.'
-    ],
-    tips: 'Think of hips moving horizontally backward, not descending vertically.',
-    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'ex-leg-press',
-    name: '45-Degree Sled Leg Press',
-    category: 'Lower Body',
-    targetMuscles: ['Quadriceps', 'Glutes'],
-    equipmentNeeded: '45° Leg Press Machine',
-    defaultSets: 4,
-    defaultReps: 12,
-    defaultWeightKg: 160,
-    defaultRestSeconds: 90,
-    instructions: [
-      'Sit firmly in seat with lower back and pelvis flat against backrest.',
-      'Place feet shoulder-width in middle of sled platform.',
-      'Disengage safeties and lower sled until knees form 90-degree angle.',
-      'Press sled up without completely locking out knees.'
-    ],
-    tips: 'Never let your tailbone or lower back lift off the pad.',
-    imageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'ex-bulgarian-split-squat',
-    name: 'Dumbbell Bulgarian Split Squat',
-    category: 'Lower Body',
-    targetMuscles: ['Quadriceps', 'Glutes', 'Adductors'],
-    equipmentNeeded: 'Bench & Dumbbells',
+    id: 'ex-ub-hammer-curl',
+    name: 'Dumbbell Neutral-Grip Hammer Curls',
+    category: 'Upper Body',
+    difficulty: 'Beginner',
+    targetMuscles: ['Brachioradialis', 'Biceps Brachii', 'Forearms'],
+    equipmentNeeded: 'Pair of Dumbbells',
+    durationSeconds: 40,
     defaultSets: 3,
-    defaultReps: 10,
-    defaultWeightKg: 18,
-    defaultRestSeconds: 75,
+    defaultReps: 12,
+    defaultWeightKg: 14,
+    defaultRestSeconds: 60,
+    description: 'Thickens the forearms and brachialis muscle, adding upper arm width and building resilient grip strength.',
     instructions: [
-      'Place top of rear foot on bench behind you.',
-      'Lower torso vertically until front thigh is parallel to floor.',
-      'Drive through front heel to return to top.'
+      'Hold dumbbells at sides with neutral grip (palms facing each other).',
+      'Keep upper arms stationary and curl dumbbells up toward shoulders.',
+      'Hold peak contraction for 1 second, then lower under control.',
+      'Perform both arms simultaneously or alternating.'
     ],
-    tips: 'Unilateral gold standard: balances strength asymmetries between left and right leg.',
-    imageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop'
+    tips: 'Do not rock your torso to start the movement; lift from a dead-stop.',
+    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
   },
   {
-    id: 'ex-hip-thrust',
-    name: 'Barbell Glute Hip Thrust',
-    category: 'Lower Body',
-    targetMuscles: ['Gluteus Maximus', 'Hamstrings'],
-    equipmentNeeded: 'Barbell, Foam Pad & Bench',
-    defaultSets: 4,
-    defaultReps: 10,
-    defaultWeightKg: 100,
-    defaultRestSeconds: 90,
+    id: 'ex-ub-tricep-pushdown',
+    name: 'Cable Tricep Rope Pushdowns',
+    category: 'Upper Body',
+    difficulty: 'Beginner',
+    targetMuscles: ['Triceps Lateral & Medial Heads'],
+    equipmentNeeded: 'Cable Machine & Rope Attachment',
+    durationSeconds: 40,
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeightKg: 25,
+    defaultRestSeconds: 60,
+    description: 'High-isolation triceps builder enabling deep contraction and elbow extension against continuous cable tension.',
     instructions: [
-      'Upper back supported against bench, barbell placed across hip crease with pad.',
-      'Feet flat on ground shoulder-width apart.',
-      'Drive hips straight upward toward ceiling, squeezing glutes hard at top.',
-      'Hold peak squeeze for 1 second with posterior pelvic tilt.'
+      'Set pulley to top position, grasp rope with neutral grip.',
+      'Pin elbows securely against torso with slight torso forward lean.',
+      'Push rope down smoothly until arms lock out completely.',
+      'Spread rope ends apart at bottom for maximum triceps contraction.'
     ],
-    tips: 'Keep chin tucked toward chest rather than leaning head back.',
-    imageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop'
+    tips: 'Do not allow elbows to drift forward during the negative phase.',
+    imageUrl: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/26FmRaL0954p6UjPq/giphy.gif'
   },
   {
-    id: 'ex-standing-calf-raise',
-    name: 'Standing Machine Calf Raise',
-    category: 'Lower Body',
-    targetMuscles: ['Gastrocnemius', 'Soleus'],
-    equipmentNeeded: 'Standing Calf Machine',
+    id: 'ex-ub-lateral-raise',
+    name: 'Standing Dumbbell Lateral Raises',
+    category: 'Upper Body',
+    difficulty: 'Beginner',
+    targetMuscles: ['Lateral Deltoid', 'Supraspinatus'],
+    equipmentNeeded: 'Pair of Dumbbells',
+    durationSeconds: 40,
     defaultSets: 4,
     defaultReps: 15,
-    defaultWeightKg: 70,
-    defaultRestSeconds: 45,
-    instructions: [
-      'Balls of feet on platform, drop heels down into deep 2-second stretch.',
-      'Drive up onto big toes and hold maximum contraction for 1 full second.'
-    ],
-    tips: 'Bouncing removes tension from the calf muscle into the Achilles tendon. Use strict pauses.',
-    imageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop'
-  },
-
-  // CORE
-  {
-    id: 'ex-hanging-leg-raise',
-    name: 'Hanging Straight Leg Raise',
-    category: 'Core',
-    targetMuscles: ['Lower Abs (Rectus Abdominis)', 'Hip Flexors'],
-    equipmentNeeded: 'Pull-Up Bar',
-    defaultSets: 3,
-    defaultReps: 12,
-    defaultWeightKg: 0,
+    defaultWeightKg: 10,
     defaultRestSeconds: 60,
+    description: 'The key isolation movement for round, capped lateral deltoid caps and broad shoulder aesthetics.',
     instructions: [
-      'Hang from pull-up bar with overhand grip and engaged lats.',
-      'Without swinging, raise legs straight up until toes touch bar or reach 90 degrees.',
-      'Lower slowly over 3 seconds under strict abdominal control.'
+      'Stand with dumbbells in front of thighs, slight bend in elbows.',
+      'Raise arms out to sides in scaption plane (30 degrees forward of midline).',
+      'Lift until weights reach shoulder height, leading with elbows.',
+      'Lower weights under strict 2-second control without dropping.'
     ],
-    tips: 'Curl pelvis up at top of movement to fully engage abdominal wall.',
-    imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=600&auto=format&fit=crop'
+    tips: 'Think about pushing the dumbbells outward toward the walls rather than simply pulling up.',
+    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
   },
   {
-    id: 'ex-cable-woodchopper',
-    name: 'Cable High-to-Low Woodchoppers',
-    category: 'Core',
-    targetMuscles: ['Internal & External Obliques', 'Transverse Abdominis'],
-    equipmentNeeded: 'High Cable Tower & Handle',
+    id: 'ex-ub-face-pulls',
+    name: 'Cable Face Pulls with External Rotation',
+    category: 'Upper Body',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Rear Deltoids', 'Rotator Cuff', 'Rhomboids', 'Middle Traps'],
+    equipmentNeeded: 'Cable Machine & Rope',
+    durationSeconds: 40,
     defaultSets: 3,
-    defaultReps: 12,
+    defaultReps: 15,
     defaultWeightKg: 20,
     defaultRestSeconds: 45,
+    description: 'Crucial shoulder health and posture exercise strengthening rear delts and external rotator cuffs.',
     instructions: [
-      'Stand perpendicular to high cable with feet wider than shoulder-width.',
-      'Pull handle diagonally across body down toward opposite knee.',
-      'Pivot rear foot and rotate through core torso.'
+      'Set cable to eye level with rope attachment.',
+      'Grip rope thumbs facing back, step back into staggered stance.',
+      'Pull rope toward bridge of nose, separating hands.',
+      'Rotate hands back so forearms are vertical in a double-bicep flex.'
     ],
-    tips: 'Arms stay relatively extended; movement is driven by rotational torso torque.',
-    imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'ex-ab-wheel-rollout',
-    name: 'Ab Wheel Rollouts',
-    category: 'Core',
-    targetMuscles: ['Rectus Abdominis', 'Lats', 'Core Anti-Extension'],
-    equipmentNeeded: 'Ab Wheel Roller & Kneeling Mat',
-    defaultSets: 3,
-    defaultReps: 10,
-    defaultWeightKg: 0,
-    defaultRestSeconds: 60,
-    instructions: [
-      'Kneel on mat with wheel directly underneath shoulders.',
-      'Round upper back slightly and roll wheel forward extending torso as far as tolerable.',
-      'Pull wheel back toward knees using abdominals alone.'
-    ],
-    tips: 'Never let your lower back sag into hyperextension.',
-    imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'ex-weighted-plank',
-    name: 'Weighted RKC Plank',
-    category: 'Core',
-    targetMuscles: ['Deep Transverse Abdominis', 'Glutes', 'Serratus Anterior'],
-    equipmentNeeded: 'Weight Plate & Floor Mat',
-    defaultSets: 3,
-    defaultReps: 45,
-    defaultWeightKg: 15,
-    defaultRestSeconds: 60,
-    instructions: [
-      'Assume forearm plank position with weight plate resting securely on upper back.',
-      'Pull elbows toward toes while aggressively flexing glutes and quads.',
-      'Breathe deeply while maintaining maximum isometric whole-body tension.'
-    ],
-    tips: 'Active RKC bracing generates 3x more abdominal activation than passive planks.',
-    imageUrl: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=600&auto=format&fit=crop'
+    tips: 'Squeeze shoulder blades together hard on every rep to counter forward shoulder hunch.',
+    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
   },
 
-  // CARDIO & HIIT
+  // ==========================================
+  // LOWER BODY (Legs, Glutes & Calves)
+  // ==========================================
   {
-    id: 'ex-kettlebell-swings',
-    name: 'Hardstyle Kettlebell Swings',
-    category: 'Cardio',
-    targetMuscles: ['Glutes', 'Hamstrings', 'Cardiovascular System', 'Lats'],
-    equipmentNeeded: 'Cast Iron Kettlebell (20kg+)',
-    defaultSets: 4,
+    id: 'ex-lb-goblet-squat',
+    name: 'Kettlebell / Dumbbell Goblet Squat',
+    category: 'Lower Body',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Quadriceps', 'Glutes', 'Core', 'Upper Back'],
+    equipmentNeeded: 'Kettlebell or Dumbbell (12-24kg)',
+    durationSeconds: 50,
+    defaultSets: 3,
+    defaultReps: 12,
+    defaultWeightKg: 16,
+    defaultRestSeconds: 60,
+    description: 'Superb squat teacher teaching upright posture, deep hip flexion, and core bracing with zero spinal risk.',
+    instructions: [
+      'Hold kettlebell at chest with elbows tucked in close.',
+      'Set stance shoulder-width apart, toes slightly flared.',
+      'Inhale, sit down between hips until elbows gently touch inside knees.',
+      'Drive through whole foot to stand tall, locking hips and knees.'
+    ],
+    tips: 'Keep the weight glued tight against your sternum throughout the entire rep.',
+    imageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
+  },
+  {
+    id: 'ex-lb-walking-lunges',
+    name: 'Walking Dumbbell Lunges',
+    category: 'Lower Body',
+    difficulty: 'Beginner',
+    targetMuscles: ['Quadriceps', 'Gluteus Maximus', 'Hamstrings', 'Calves'],
+    equipmentNeeded: 'Pair of Dumbbells (10-20kg)',
+    durationSeconds: 60,
+    defaultSets: 3,
     defaultReps: 20,
-    defaultWeightKg: 24,
-    defaultRestSeconds: 45,
-    instructions: [
-      'Hinge at hips with soft knees, hike bell between upper thighs.',
-      'Snap hips forward explosively standing tall like an upright plank.',
-      'Float bell to chest level before letting gravity pull it back into hip hinge.'
-    ],
-    tips: 'This is a ballistic hip hinge, never a squat or front raise.',
-    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'ex-assault-bike-sprints',
-    name: 'Air Bike Max Effort Sprints',
-    category: 'Cardio',
-    targetMuscles: ['Full Body Conditioning', 'Anaerobic Threshold', 'Quads'],
-    equipmentNeeded: 'Assault / Rogue Echo Bike',
-    defaultSets: 5,
-    defaultReps: 30, // seconds
-    defaultWeightKg: 0,
+    defaultWeightKg: 14,
     defaultRestSeconds: 60,
+    description: 'Dynamic locomotive leg developer building quad mass, glute definition, and single-leg balance.',
     instructions: [
-      'Adjust seat height so slight knee bend exists at lowest pedal position.',
-      'Push and pull handles with maximum aggression while pumping legs at 100% effort.'
+      'Hold dumbbells at sides with tall posture.',
+      'Take a generous stride forward, lowering back knee until it hovers 1 inch off floor.',
+      'Drive through front heel to step directly into the next forward lunge.',
+      'Continue alternating steps fluidly across the floor.'
     ],
-    tips: 'Maintain steady rhythmic breathing during rest intervals to expedite lactate clearing.',
-    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop'
+    tips: 'Keep your front knee tracking straight ahead over your middle toes.',
+    imageUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/26FmRaL0954p6UjPq/giphy.gif'
   },
   {
-    id: 'ex-box-jumps',
-    name: 'Plyometric Box Jumps',
-    category: 'Cardio',
-    targetMuscles: ['Fast-Twitch Muscle Fibers', 'Quads', 'Glutes'],
-    equipmentNeeded: '24-30 inch Plyo Box',
+    id: 'ex-lb-glute-bridge',
+    name: 'Barbell Hip Thrust / Glute Bridge',
+    category: 'Lower Body',
+    difficulty: 'Beginner',
+    targetMuscles: ['Gluteus Maximus', 'Hamstrings'],
+    equipmentNeeded: 'Barbell with Pad & Bench',
+    durationSeconds: 50,
     defaultSets: 4,
-    defaultReps: 8,
-    defaultWeightKg: 0,
-    defaultRestSeconds: 60,
+    defaultReps: 12,
+    defaultWeightKg: 60,
+    defaultRestSeconds: 75,
+    description: 'Maximum horizontal glute activation exercise building peak glute force and hip extension power.',
     instructions: [
-      'Stand 1 foot from box, load hips and swing arms backward.',
-      'Explode upwards landing quietly with soft knees in center of box.',
-      'Stand up to full extension, then step down one foot at a time.'
+      'Sit on floor with upper back against bench, barbell cushioned over hips.',
+      'Place feet flat shoulder-width apart, shins vertical at top of lift.',
+      'Drive through heels, extending hips upward until thighs and torso align horizontally.',
+      'Hold peak squeeze for 1 full second, then lower hips with control.'
     ],
-    tips: 'Step down rather than jumping down backwards to protect Achilles tendons.',
-    imageUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop'
+    tips: 'Tuck chin and look forward, not up at the ceiling, to avoid hyperextending lower back.',
+    imageUrl: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/l41lO5Gq8yV1k4Xra/giphy.gif'
   },
-
-  // MOBILITY
   {
-    id: 'ex-world-greatest-stretch',
-    name: "World's Greatest Stretch",
-    category: 'Mobility',
-    targetMuscles: ['Hip Flexors', 'Thoracic Spine', 'Hamstrings', 'Ankles'],
-    equipmentNeeded: 'Floor Mat',
+    id: 'ex-lb-calf-raises',
+    name: 'Standing Barbell / Machine Calf Raises',
+    category: 'Lower Body',
+    difficulty: 'Zero Level',
+    targetMuscles: ['Gastrocnemius', 'Soleus'],
+    equipmentNeeded: 'Step Block or Calf Machine',
+    durationSeconds: 40,
+    defaultSets: 4,
+    defaultReps: 15,
+    defaultWeightKg: 40,
+    defaultRestSeconds: 45,
+    description: 'Isolated triceps surae movement building ankle stiffness, sprint acceleration, and calf definition.',
+    instructions: [
+      'Position balls of feet on block with heels hanging freely off edge.',
+      'Lower heels down into a deep stretch for a 2-second pause.',
+      'Press through big toes to raise as high as possible onto balls of feet.',
+      'Squeeze calves hard at apex for 1 second before descending.'
+    ],
+    tips: 'Eliminate bouncing at the bottom; pausing removes Achilles tendon elasticity and forces muscle work.',
+    imageUrl: 'https://images.unsplash.com/photo-1434596922112-19c563067271?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif'
+  },
+  {
+    id: 'ex-lb-nordic-curl',
+    name: 'Nordic Hamstring Curl Eccentric Lowering',
+    category: 'Lower Body',
+    difficulty: 'Advanced',
+    targetMuscles: ['Hamstrings (Biceps Femoris)', 'Glutes', 'Calves'],
+    equipmentNeeded: 'Ankle Anchor or Partner',
+    durationSeconds: 45,
     defaultSets: 3,
     defaultReps: 6,
     defaultWeightKg: 0,
-    defaultRestSeconds: 30,
+    defaultRestSeconds: 90,
+    description: 'Clinically proven gold standard movement for eccentric hamstring strength and tear prevention.',
     instructions: [
-      'Step into deep forward lunge with hands on floor inside front foot.',
-      'Drop inside elbow toward ankle for 2 seconds.',
-      'Rotate torso upward pointing top hand straight to the ceiling.',
-      'Shift hips back to straighten front leg and stretch hamstring.'
+      'Kneel on pad with ankles securely anchored behind you.',
+      'Maintain straight line from knees through hips to shoulders.',
+      'Slowly lower torso toward floor, resisting gravity purely with hamstrings.',
+      'Catch yourself with hands on floor when needed, and lightly press back up.'
     ],
-    tips: 'Flow smoothly through all three phases on both left and right sides.',
-    imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    id: 'ex-90-90-hip-flow',
-    name: '90/90 Hip Mobility Transitions',
-    category: 'Mobility',
-    targetMuscles: ['Hip Internal & External Rotators', 'Gluteus Medius'],
-    equipmentNeeded: 'Floor Mat',
-    defaultSets: 3,
-    defaultReps: 10,
-    defaultWeightKg: 0,
-    defaultRestSeconds: 30,
-    instructions: [
-      'Sit with both knees bent at 90-degree angles on floor.',
-      'Hinge forward over front shin to stretch external rotators.',
-      'Lift knees without using hands and windshield-wiper legs to opposite side.'
-    ],
-    tips: 'Keep spine upright and attempt to rotate hips with minimal torso swaying.',
-    imageUrl: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=600&auto=format&fit=crop'
+    tips: 'Resist bending at the hips; keep glutes tightly locked throughout the descent.',
+    imageUrl: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=800&auto=format&fit=crop',
+    gifUrl: 'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif'
   }
 ];

@@ -78,9 +78,57 @@
         "trialActive": { "type": "boolean" }
       },
       "required": ["userId", "entitlement", "status"]
+    },
+    "FavoriteWorkout": {
+      "title": "FavoriteWorkout",
+      "description": "User bookmarked or favorited workout routine reference.",
+      "type": "object",
+      "properties": {
+        "workoutId": { "type": "string", "description": "ID of favorited workout" },
+        "favoritedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["workoutId", "favoritedAt"]
+    },
+    "WorkoutNote": {
+      "title": "WorkoutNote",
+      "description": "Personal athlete training note and log.",
+      "type": "object",
+      "properties": {
+        "noteId": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["noteId", "userId", "title", "content"]
+    },
+    "Exercise": {
+      "title": "Exercise",
+      "description": "Granular athletic movement with muscle targeting, instructions, sets, reps, and equipment.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "targetMuscles": { "type": "array", "items": { "type": "string" } },
+        "equipmentNeeded": { "type": "string" },
+        "defaultSets": { "type": "number" },
+        "defaultReps": { "type": "number" },
+        "defaultWeightKg": { "type": "number" },
+        "defaultRestSeconds": { "type": "number" },
+        "instructions": { "type": "array", "items": { "type": "string" } },
+        "tips": { "type": "string" },
+        "imageUrl": { "type": "string" }
+      },
+      "required": ["id", "name", "category", "targetMuscles", "equipmentNeeded"]
     }
   },
   "firestore": {
+    "/exercises/{exerciseId}": {
+      "schema": "Exercise",
+      "description": "Primary repository of all athletic movements and exercises."
+    },
     "/workouts/{workoutId}": {
       "schema": "Workout",
       "description": "Global workout routines library accessible to all athletes."
@@ -93,6 +141,10 @@
       "schema": "WorkoutSession",
       "description": "Chronological workout sessions performed by this athlete."
     },
+    "/users/{userId}/workout_sessions/{sessionId}": {
+      "schema": "WorkoutSession",
+      "description": "Active and completed athlete workout sessions."
+    },
     "/users/{userId}/daily_challenges/{challengeId}": {
       "schema": "DailyChallenge",
       "description": "Per-user daily challenges and completion tracking."
@@ -100,6 +152,14 @@
     "/users/{userId}/subscription/current": {
       "schema": "UserSubscription",
       "description": "Active membership and entitlement status for this user."
+    },
+    "/users/{userId}/favorite_workouts/{workoutId}": {
+      "schema": "FavoriteWorkout",
+      "description": "Athlete favorited workout routines."
+    },
+    "/users/{userId}/workout_notes/{noteId}": {
+      "schema": "WorkoutNote",
+      "description": "Athlete personal workout notes and reflections."
     }
   }
 }

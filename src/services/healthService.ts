@@ -3,6 +3,8 @@ import { db } from './firebase';
 import { HealthConnection, HealthConnectionState } from '../types';
 
 export class HealthDataService {
+  private static cachedConnections: Map<string, HealthConnection[]> = new Map();
+
   private static defaultConnections: HealthConnection[] = [
     {
       connectionId: 'conn_apple_health',
@@ -72,15 +74,21 @@ export class HealthDataService {
       const map = new Map<string, HealthConnection>();
       snap.forEach(d => map.set(d.id, d.data() as HealthConnection));
 
-      return this.defaultConnections.map(c => {
+      const merged = this.defaultConnections.map(c => {
         const existing = map.get(c.connectionId);
         if (existing) {
           return { ...c, ...existing, userId };
         }
         return { ...c, userId };
       });
+      this.cachedConnections.set(userId, merged);
+      return merged;
     } catch {
-      return this.defaultConnections.map(c => ({ ...c, userId }));
+      const cached = this.cachedConnections.get(userId);
+      if (cached) return cached;
+      const initial = this.defaultConnections.map(c => ({ ...c, userId }));
+      this.cachedConnections.set(userId, initial);
+      return initial;
     }
   }
 
@@ -99,7 +107,7 @@ export class HealthDataService {
       ...target,
       userId,
       status,
-      lastSyncedAt: status === 'connected' ? new Date().toISOString() : target.lastSyncedAt,
+      lastSyncedAt: status === 'connected' ? new Date().toISOString() : (target.lastSyncedAt || null),
       metricsSynced: status === 'connected' ? {
         steps: target.metricsSynced.steps || 7420,
         activeCalories: target.metricsSynced.activeCalories || 480,
@@ -108,6 +116,10 @@ export class HealthDataService {
         syncedWorkoutsCount: (target.metricsSynced.syncedWorkoutsCount || 0) + 1
       } : target.metricsSynced
     };
+
+    // Update in-memory cache immediately
+    const updatedList = list.map(c => c.connectionId === connectionId ? updated : c);
+    this.cachedConnections.set(userId, updatedList);
 
     try {
       const ref = doc(db, 'users', userId, 'health_connections', connectionId);

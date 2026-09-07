@@ -91,34 +91,34 @@ export const LegalModal: React.FC<LegalModalProps> = ({
         className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-3xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
       >
         {/* Modal Header */}
-        <div className="shrink-0 p-4 sm:p-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-950/80">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+        <div className="shrink-0 p-3.5 sm:p-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-950/80 gap-2">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <div>
-              <h2 className="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+            <div className="min-w-0">
+              <h2 className="text-sm sm:text-lg font-black tracking-tight text-white flex items-center gap-2 truncate">
                 <span>TORVEX GYM</span>
-                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
-                  Compliance & Legal
+                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700 shrink-0">
+                  Compliance
                 </span>
               </h2>
-              <p className="text-xs text-zinc-400">
-                Official App Store, Google Play & Web Legal Documentation
+              <p className="text-[11px] sm:text-xs text-zinc-400 truncate">
+                App Store, Google Play & Web Legal Documentation
               </p>
             </div>
           </div>
           <button
             id="legal_modal_close_button"
             onClick={onClose}
-            className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+            className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Navigation */}
-        <div className="shrink-0 flex items-center gap-1 p-2 bg-zinc-950 border-b border-zinc-800 overflow-x-auto text-xs font-semibold">
+        <div className="shrink-0 flex items-center gap-1 p-2 bg-zinc-950 border-b border-zinc-800 overflow-x-auto text-xs font-semibold scrollbar-thin">
           <button
             id="legal_tab_privacy"
             onClick={() => setActiveTab('privacy')}
@@ -311,9 +311,9 @@ export const LegalModal: React.FC<LegalModalProps> = ({
                   <div className="bg-zinc-950 border border-zinc-800 p-3.5 rounded-xl">
                     <h4 className="font-bold text-white flex items-center gap-1.5">
                       <Database className="w-4 h-4 text-emerald-400" />
-                      Cloud Services Status
+                      App Services Status
                     </h4>
-                    <p className="text-zinc-400 mt-1">Firestore Database & Auth:</p>
+                    <p className="text-zinc-400 mt-1">Network & Sync Services:</p>
                     <span className="inline-flex items-center gap-1 text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded mt-1 border border-emerald-500/20">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                       100% Operational

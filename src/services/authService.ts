@@ -6,7 +6,8 @@ import {
   onAuthStateChanged,
   User as FirebaseUser,
   sendPasswordResetEmail,
-  updateProfile
+  updateProfile,
+  signInAnonymously
 } from 'firebase/auth';
 import { 
   doc, 
@@ -217,7 +218,17 @@ export class AuthenticationService {
     if (code !== '123456' && code !== '000000') {
       throw new Error('Invalid verification code. Use development test code: 123456');
     }
-    const syntheticUid = 'phone_user_' + phoneNumber.replace(/\D/g, '').slice(-8);
+    let syntheticUid = 'phone_user_' + phoneNumber.replace(/\D/g, '').slice(-8);
+    try {
+      if (!auth.currentUser) {
+        const cred = await signInAnonymously(auth);
+        syntheticUid = cred.user.uid;
+      } else {
+        syntheticUid = auth.currentUser.uid;
+      }
+    } catch (e) {
+      console.warn('Anonymous auth for phone verification:', e);
+    }
     const profile = await this.fetchOrCreateUserProfile({
       uid: syntheticUid,
       email: `${syntheticUid}@torvex.app`,
@@ -226,13 +237,23 @@ export class AuthenticationService {
     });
     this.currentUserProfile = profile;
     LocalStorageService.saveCachedUserProfile(profile);
-    this.notifyListeners(profile, null);
+    this.notifyListeners(profile, auth.currentUser);
     return profile;
   }
 
   // Quick Demo Guest Sign-In for QA & Sandbox testing
   static async signInAsDemoAthlete(): Promise<UserProfile> {
-    const demoUid = 'torvex_demo_athlete_01';
+    let demoUid = 'torvex_demo_athlete_01';
+    try {
+      if (!auth.currentUser) {
+        const cred = await signInAnonymously(auth);
+        demoUid = cred.user.uid;
+      } else {
+        demoUid = auth.currentUser.uid;
+      }
+    } catch (e) {
+      console.warn('Anonymous auth for demo sign-in:', e);
+    }
     const profile = await this.fetchOrCreateUserProfile({
       uid: demoUid,
       email: 'alex.vance@torvex.com',
@@ -241,7 +262,7 @@ export class AuthenticationService {
     });
     this.currentUserProfile = profile;
     LocalStorageService.saveCachedUserProfile(profile);
-    this.notifyListeners(profile, null);
+    this.notifyListeners(profile, auth.currentUser);
     return profile;
   }
 

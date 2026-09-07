@@ -1,27 +1,20 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
+  Dumbbell, 
   Search, 
   Filter, 
-  Clock, 
+  Star, 
   Flame, 
-  Dumbbell, 
-  Heart, 
-  Lock, 
-  Sparkles, 
-  ChevronRight,
-  SlidersHorizontal,
-  Cloud,
-  RefreshCw,
+  Clock, 
+  ChevronRight, 
+  Lock,
   Layers,
   BookOpen,
-  Info,
-  CheckCircle2,
-  RotateCcw
+  Film
 } from 'lucide-react';
-import { Workout, WorkoutCategory, WorkoutDifficulty, Exercise } from '../../types';
-import { WorkoutService } from '../../services/workoutService';
+import { Workout, WorkoutCategory, Exercise } from '../../types';
 import { INITIAL_WORKOUTS } from '../../data/initialCatalog';
+import { WorkoutService } from '../../services/workoutService';
 import { COMPREHENSIVE_EXERCISES } from '../../data/allExercisesCatalog';
 import { ExerciseDetailModal } from '../ExerciseDetailModal';
 
@@ -29,30 +22,36 @@ interface WorkoutsViewProps {
   workouts: Workout[];
   favoriteIds: string[];
   isPremium: boolean;
+  selectedCategoryFilter?: WorkoutCategory | 'All';
+  onCategoryFilterChange?: (category: WorkoutCategory | 'All') => void;
   onSelectWorkout: (workout: Workout) => void;
   onToggleFavorite: (workoutId: string) => void;
 }
 
 const CATEGORIES: (WorkoutCategory | 'All')[] = [
   'All',
+  'Strength',
+  'Yoga',
+  'Cardio',
   'Full Body',
   'Upper Body',
   'Lower Body',
-  'Strength',
-  'Cardio',
   'Core',
   'Mobility'
 ];
 
-const DIFFICULTIES = ['All', 'Beginner', 'Intermediate', 'Advanced'];
+const DIFFICULTIES = ['All', 'Zero Level', 'Beginner', 'Intermediate', 'Advanced'];
 
 export const WorkoutsView: React.FC<WorkoutsViewProps> = ({
   workouts,
   favoriteIds,
   isPremium,
+  selectedCategoryFilter,
+  onCategoryFilterChange,
   onSelectWorkout,
-  onToggleFavorite
+  onToggleFavorite,
 }) => {
+  // Mode switcher: 'programs' or 'library'
   const [viewMode, setViewMode] = useState<'programs' | 'library'>(() => {
     try {
       const saved = localStorage.getItem('torvex_workouts_view_mode');
@@ -61,17 +60,36 @@ export const WorkoutsView: React.FC<WorkoutsViewProps> = ({
       return 'programs';
     }
   });
-  const [internalWorkouts, setInternalWorkouts] = useState<Workout[]>(() => (workouts && workouts.length > 0 ? workouts : INITIAL_WORKOUTS));
+
+  // Exercises collection for the library mode
   const [exercises, setExercises] = useState<Exercise[]>(() => COMPREHENSIVE_EXERCISES);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<WorkoutCategory | 'All'>('All');
+
+  // Filter and Search States
+  const [selectedCategory, setSelectedCategory] = useState<WorkoutCategory | 'All'>(
+    selectedCategoryFilter || 'All'
+  );
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [onlyFavorites, setOnlyFavorites] = useState<boolean>(false);
-  const [isSyncingCloud, setIsSyncingCloud] = useState<boolean>(false);
-  const [syncMessage, setSyncMessage] = useState<string | null>(null);
-  const hasFetchedRef = useRef<boolean>(false);
+
+  // Keep internal selectedCategory in sync when parent passes a new selectedCategoryFilter
+  useEffect(() => {
+    if (selectedCategoryFilter !== undefined) {
+      setSelectedCategory(selectedCategoryFilter);
+      // When user selects a specific discipline (from Home or externally), automatically display the exercise library for that discipline
+      if (selectedCategoryFilter !== 'All') {
+        setViewMode('library');
+      }
+    }
+  }, [selectedCategoryFilter]);
+
+  const handleCategorySelect = (cat: WorkoutCategory | 'All') => {
+    setSelectedCategory(cat);
+    if (onCategoryFilterChange) {
+      onCategoryFilterChange(cat);
+    }
+  };
 
   const handleSetViewMode = (mode: 'programs' | 'library') => {
     setViewMode(mode);
@@ -82,86 +100,22 @@ export const WorkoutsView: React.FC<WorkoutsViewProps> = ({
     }
   };
 
-  // Fetch function ensuring data is seamlessly synced in background without flickering
-  const fetchWorkoutData = useCallback(async () => {
-    if (hasFetchedRef.current) return;
-    hasFetchedRef.current = true;
-
-    try {
-      const [fetchedWorkouts, fetchedExercises] = await Promise.all([
-        WorkoutService.getWorkouts(),
-        WorkoutService.getExercises()
-      ]);
-
-      if (fetchedWorkouts && fetchedWorkouts.length > 0) {
-        setInternalWorkouts(prev => {
-          if (prev.length === fetchedWorkouts.length && prev[0]?.workoutId === fetchedWorkouts[0]?.workoutId) {
-            return prev;
-          }
-          return fetchedWorkouts;
-        });
-      }
-
-      if (fetchedExercises && fetchedExercises.length > 0) {
-        setExercises(prev => {
-          if (prev.length === fetchedExercises.length && prev[0]?.id === fetchedExercises[0]?.id) {
-            return prev;
-          }
-          return fetchedExercises;
-        });
-      }
-    } catch (err) {
-      console.warn('Initial workout data fetch error, using local catalog fallback:', err);
-    }
+  // Subscribe to exercise library updates smoothly and automatically in background
+  useEffect(() => {
+    const unsub = WorkoutService.subscribeToExercises((freshExercises) => {
+      setExercises(freshExercises);
+    });
+    return () => unsub();
   }, []);
 
-  // Memoized effect hook ensuring data is fetched strictly once on mount
-  useEffect(() => {
-    fetchWorkoutData();
-  }, [fetchWorkoutData]);
-
-  // Synchronize incoming workouts without triggering full re-renders if content is unchanged
-  useEffect(() => {
-    if (workouts && workouts.length > 0) {
-      setInternalWorkouts(prev => {
-        if (prev.length === workouts.length && prev[0]?.workoutId === workouts[0]?.workoutId) {
-          return prev;
-        }
-        return workouts;
-      });
-      setIsLoading(false);
-    }
+  // Single source of truth for workouts: prop passed from App.tsx with default fallback
+  const activeWorkouts = useMemo(() => {
+    return (workouts && workouts.length > 0) ? workouts : INITIAL_WORKOUTS;
   }, [workouts]);
 
-  const handleManualCloudSync = async () => {
-    setIsSyncingCloud(true);
-    setSyncMessage('Syncing with Firestore...');
-    try {
-      const [wCount, exCount] = await Promise.all([
-        WorkoutService.seedWorkoutsToCloud(),
-        WorkoutService.seedExercisesToCloud()
-      ]);
-      const [freshWorkouts, freshExercises] = await Promise.all([
-        WorkoutService.getWorkouts(),
-        WorkoutService.getExercises()
-      ]);
-      if (freshWorkouts?.length) setInternalWorkouts(freshWorkouts);
-      if (freshExercises?.length) setExercises(freshExercises);
-      setSyncMessage(`✓ Synced ${wCount} routines & ${exCount} exercises!`);
-      setTimeout(() => setSyncMessage(null), 4000);
-    } catch (err) {
-      console.error('Cloud sync error:', err);
-      setSyncMessage('Error syncing to cloud');
-      setTimeout(() => setSyncMessage(null), 3000);
-    } finally {
-      setIsSyncingCloud(false);
-    }
-  };
-
-  // Memoized filtered workouts list to prevent re-calculations and unnecessary re-renders
+  // Memoized filtered workouts list
   const filteredWorkouts = useMemo(() => {
-    const list = internalWorkouts.length > 0 ? internalWorkouts : workouts;
-    return list.filter(w => {
+    return activeWorkouts.filter(w => {
       if (onlyFavorites && !favoriteIds.includes(w.workoutId)) return false;
       if (selectedCategory !== 'All' && w.category !== selectedCategory) return false;
       if (selectedDifficulty !== 'All' && w.difficulty !== selectedDifficulty) return false;
@@ -175,12 +129,13 @@ export const WorkoutsView: React.FC<WorkoutsViewProps> = ({
       }
       return true;
     });
-  }, [internalWorkouts, workouts, onlyFavorites, favoriteIds, selectedCategory, selectedDifficulty, searchQuery]);
+  }, [activeWorkouts, onlyFavorites, favoriteIds, selectedCategory, selectedDifficulty, searchQuery]);
 
-  // Memoized filtered exercises list
+  // Memoized filtered exercises list with difficulty & search support
   const filteredExercises = useMemo(() => {
     return exercises.filter(ex => {
       if (selectedCategory !== 'All' && ex.category !== selectedCategory) return false;
+      if (selectedDifficulty !== 'All' && ex.difficulty !== selectedDifficulty) return false;
       if (searchQuery.trim() !== '') {
         const q = searchQuery.toLowerCase();
         const matchesName = ex.name.toLowerCase().includes(q);
@@ -191,73 +146,89 @@ export const WorkoutsView: React.FC<WorkoutsViewProps> = ({
       }
       return true;
     });
-  }, [exercises, selectedCategory, searchQuery]);
+  }, [exercises, selectedCategory, selectedDifficulty, searchQuery]);
+
+  // Quick single-exercise workout launcher
+  const handleStartQuickExercise = (ex: Exercise) => {
+    const quickWorkout: Workout = {
+      workoutId: `quick_${ex.id}_${Date.now()}`,
+      title: ex.name,
+      category: ex.category,
+      difficulty: ex.difficulty || 'Intermediate',
+      estimatedCalories: Math.round((ex.durationSeconds || 60) * 0.15 * ex.defaultSets),
+      durationMinutes: Math.max(5, Math.ceil(((ex.durationSeconds || 60) + ex.defaultRestSeconds) * ex.defaultSets / 60)),
+      description: ex.description || `Focused training session focusing on ${ex.name}.`,
+      targetMuscles: ex.targetMuscles,
+      exerciseCount: 1,
+      imageUrl: ex.imageUrl || 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop',
+      exercises: [
+        {
+          exerciseId: ex.id,
+          exerciseName: ex.name,
+          targetMuscles: ex.targetMuscles,
+          sets: ex.defaultSets,
+          reps: ex.defaultReps,
+          weightKg: ex.defaultWeightKg,
+          restSeconds: ex.defaultRestSeconds,
+          difficulty: ex.difficulty,
+          instructions: ex.instructions,
+          description: ex.description,
+          imageUrl: ex.imageUrl,
+          gifUrl: ex.gifUrl
+        }
+      ],
+      isPremiumOnly: false
+    };
+    onSelectWorkout(quickWorkout);
+  };
+
+  const difficultyColors: Record<string, { bg: string; text: string; border: string }> = {
+    'Zero Level': { bg: 'bg-sky-500/10', text: 'text-sky-400', border: 'border-sky-500/30' },
+    'Beginner': { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/30' },
+    'Intermediate': { bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/30' },
+    'Advanced': { bg: 'bg-rose-500/10', text: 'text-rose-400', border: 'border-rose-500/30' },
+  };
 
   return (
     <div id="workouts_view" className="space-y-6 pb-12">
       {/* Header & View Mode Switcher */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Cloud Live Firestore
-            </span>
-            {syncMessage && (
-              <span className="text-[11px] text-amber-400 font-medium">
-                {syncMessage}
-              </span>
-            )}
-          </div>
           <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
             Training Hub
           </h1>
           <p className="text-xs sm:text-sm text-zinc-400 mt-0.5">
-            Cloud-synchronized workouts and extensive exercise movement database.
+            Personalized workout routines and complete exercise movement library.
           </p>
         </div>
 
-        {/* Action buttons & Search */}
-        <div className="flex flex-wrap items-center gap-3">
-          <button
-            id="btn_cloud_sync"
-            onClick={handleManualCloudSync}
-            disabled={isSyncingCloud}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:text-white transition-colors"
-            title="Upload/Sync all exercise and program data to Firebase Cloud"
-          >
-            <Cloud className={`w-3.5 h-3.5 ${isSyncingCloud ? 'text-amber-400 animate-spin' : 'text-emerald-400'}`} />
-            <span>{isSyncingCloud ? 'Syncing...' : 'Sync Cloud'}</span>
-          </button>
-
-          {/* Search bar */}
-          <div className="relative w-full sm:w-64">
-            <Search className="w-4 h-4 absolute left-3.5 top-3 text-zinc-500" />
-            <input
-              id="workouts_search_input"
-              type="text"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder={viewMode === 'programs' ? "Search routines, muscles..." : "Search exercises, equipment..."}
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-10 pr-4 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500 transition-colors"
-            />
-          </div>
+        {/* Search bar */}
+        <div className="relative w-full sm:w-72">
+          <Search className="w-4 h-4 absolute left-3.5 top-3 text-zinc-500" />
+          <input
+            id="workouts_search_input"
+            type="text"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            placeholder={viewMode === 'programs' ? "Search routines, muscles..." : "Search exercises, equipment..."}
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-10 pr-4 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-500 transition-colors"
+          />
         </div>
       </div>
 
       {/* Mode Tabs: Programs vs Exercise Library */}
-      <div className="flex items-center p-1 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 max-w-md">
+      <div className="flex items-center p-1 rounded-xl bg-zinc-900 border border-zinc-800 max-w-md">
         <button
           id="tab_programs"
           onClick={() => handleSetViewMode('programs')}
           className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors duration-150 ${
             viewMode === 'programs'
               ? 'bg-amber-500 text-zinc-950 shadow-sm'
-              : 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
+              : 'text-zinc-400 hover:text-white'
           }`}
         >
           <Layers className="w-3.5 h-3.5" />
-          <span>Programs ({internalWorkouts.length || workouts.length})</span>
+          <span>Routines ({activeWorkouts.length})</span>
         </button>
         <button
           id="tab_exercise_library"
@@ -265,7 +236,7 @@ export const WorkoutsView: React.FC<WorkoutsViewProps> = ({
           className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors duration-150 ${
             viewMode === 'library'
               ? 'bg-amber-500 text-zinc-950 shadow-sm'
-              : 'text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white'
+              : 'text-zinc-400 hover:text-white'
           }`}
         >
           <BookOpen className="w-3.5 h-3.5" />
@@ -279,7 +250,7 @@ export const WorkoutsView: React.FC<WorkoutsViewProps> = ({
           <button
             key={cat}
             id={`workouts_cat_${cat.toLowerCase().replace(/\s+/g, '_')}`}
-            onClick={() => setSelectedCategory(cat)}
+            onClick={() => handleCategorySelect(cat)}
             className={`shrink-0 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors duration-150 ${
               selectedCategory === cat
                 ? 'bg-amber-500 text-zinc-950 shadow-sm shadow-amber-500/20'
@@ -291,237 +262,135 @@ export const WorkoutsView: React.FC<WorkoutsViewProps> = ({
         ))}
       </div>
 
-      {/* Secondary Filters Bar (shown for programs) */}
-      {viewMode === 'programs' && (
-        <div
-          id="workout_secondary_filters"
-          className="bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl p-2.5 sm:p-3 shadow-xs transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-        >
-          {/* Difficulty Segmented Filter */}
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <div className="flex items-center gap-1.5 text-slate-700 dark:text-zinc-300 font-bold uppercase tracking-wider text-[10px] sm:text-[11px] shrink-0">
-              <Filter className="w-3.5 h-3.5 text-amber-500" />
-              <span>Difficulty:</span>
-            </div>
-            <div className="flex items-center gap-1 bg-slate-200/80 dark:bg-zinc-950/70 p-1 rounded-xl border border-slate-300/80 dark:border-zinc-800/80">
-              {DIFFICULTIES.map(diff => {
-                const isSelected = selectedDifficulty === diff;
-                return (
-                  <button
-                    key={diff}
-                    id={`filter_diff_${diff.toLowerCase()}`}
-                    onClick={() => setSelectedDifficulty(diff)}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors duration-150 ${
-                      isSelected
-                        ? 'bg-white dark:bg-zinc-800 text-amber-600 dark:text-amber-400 shadow-xs border border-slate-300 dark:border-zinc-700/60 font-black'
-                        : 'text-slate-700 dark:text-zinc-400 hover:text-slate-950 dark:hover:text-white'
-                    }`}
-                  >
-                    {diff}
-                  </button>
-                );
-              })}
-            </div>
+      {/* Secondary Filters Bar (Available in both views) */}
+      <div
+        id="workout_secondary_filters"
+        className="bg-zinc-900 border border-zinc-800 rounded-2xl p-2.5 sm:p-3 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+      >
+        {/* Difficulty Segmented Filter */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 text-zinc-300 font-bold uppercase tracking-wider text-[10px] sm:text-[11px] shrink-0">
+            <Filter className="w-3.5 h-3.5 text-amber-500" />
+            <span>Difficulty:</span>
           </div>
-
-          {/* Right Controls: Favorites Toggle & Quick Reset */}
-          <div className="flex items-center gap-2 self-end sm:self-center">
-            {/* Quick Reset when filters active */}
-            {(selectedDifficulty !== 'All' || selectedCategory !== 'All' || onlyFavorites || searchQuery.trim() !== '') && (
-              <button
-                id="btn_clear_workout_filters"
-                onClick={() => {
-                  setSelectedDifficulty('All');
-                  setSelectedCategory('All');
-                  setOnlyFavorites(false);
-                  setSearchQuery('');
-                }}
-                className="text-xs font-semibold text-slate-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400 px-2.5 py-1.5 rounded-xl hover:bg-slate-200/70 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1"
-                title="Reset all filters"
-              >
-                <RotateCcw className="w-3 h-3" />
-                <span>Reset</span>
-              </button>
-            )}
-
-            {/* Favorites Toggle */}
-            <button
-              id="btn_filter_favorites"
-              onClick={() => setOnlyFavorites(!onlyFavorites)}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors duration-150 border ${
-                onlyFavorites
-                  ? 'bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-400 border-rose-300 dark:border-rose-500/40 shadow-xs font-bold'
-                  : 'bg-slate-200/70 dark:bg-zinc-950/70 text-slate-700 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50/70 dark:hover:bg-rose-950/20 border-slate-300/80 dark:border-zinc-800/80'
-              }`}
-            >
-              <Heart className={`w-3.5 h-3.5 ${onlyFavorites ? 'fill-rose-500 text-rose-500' : 'text-slate-500 dark:text-zinc-400'}`} />
-              <span>Favorites</span>
-              {onlyFavorites && favoriteIds.length > 0 && (
-                <span className="text-[10px] bg-rose-500 text-white rounded-full px-1.5 py-0.2 font-mono ml-0.5">
-                  {favoriteIds.length}
-                </span>
-              )}
-            </button>
+          <div className="flex items-center gap-1 bg-zinc-950 p-1 rounded-xl border border-zinc-800 flex-wrap">
+            {DIFFICULTIES.map(diff => {
+              const isSelected = selectedDifficulty === diff;
+              return (
+                <button
+                  key={diff}
+                  id={`filter_diff_${diff.toLowerCase().replace(/\s+/g, '_')}`}
+                  onClick={() => setSelectedDifficulty(diff)}
+                  className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors duration-150 ${
+                    isSelected
+                      ? 'bg-amber-500 text-zinc-950 shadow-xs font-black'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {diff}
+                </button>
+              );
+            })}
           </div>
         </div>
-      )}
 
-      {/* Secondary Info/Filter Bar (shown for Exercise Library) */}
-      {viewMode === 'library' && (
-        <div
-          id="exercise_secondary_filters"
-          className="bg-white dark:bg-zinc-900 border border-slate-200/90 dark:border-zinc-800 rounded-2xl p-2.5 sm:p-3 shadow-xs transition-colors flex items-center justify-between gap-3"
-        >
-          <div className="flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-zinc-400">
-            <BookOpen className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-            <span>
-              Showing <strong className="text-slate-900 dark:text-white font-bold">{filteredExercises.length}</strong> movements
-              {selectedCategory !== 'All' && <span> in <span className="text-amber-600 dark:text-amber-400 font-bold">{selectedCategory}</span></span>}
-            </span>
-          </div>
-
-          {(selectedCategory !== 'All' || searchQuery.trim() !== '') && (
+        {/* Right Controls: Favorites Toggle & Active Filter Indicator */}
+        <div className="flex items-center gap-3">
+          {viewMode === 'programs' && (
             <button
-              id="btn_clear_exercise_filters"
+              id="filter_favorites_toggle"
+              onClick={() => setOnlyFavorites(!onlyFavorites)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors ${
+                onlyFavorites
+                  ? 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                  : 'bg-zinc-950 text-zinc-400 hover:text-zinc-200 border-zinc-800'
+              }`}
+            >
+              <Star className={`w-3.5 h-3.5 ${onlyFavorites ? 'fill-amber-400 text-amber-400' : ''}`} />
+              <span>Favorites ({favoriteIds.length})</span>
+            </button>
+          )}
+
+          {(selectedCategory !== 'All' || selectedDifficulty !== 'All' || searchQuery !== '') && (
+            <button
               onClick={() => {
                 setSelectedCategory('All');
+                setSelectedDifficulty('All');
                 setSearchQuery('');
+                setOnlyFavorites(false);
+                if (onCategoryFilterChange) onCategoryFilterChange('All');
               }}
-              className="text-xs font-semibold text-slate-500 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400 px-2.5 py-1 rounded-xl hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors flex items-center gap-1"
+              className="text-[11px] text-amber-400 hover:underline font-medium"
             >
-              <RotateCcw className="w-3 h-3" />
-              <span>Reset Filters</span>
+              Reset Filters
             </button>
           )}
         </div>
-      )}
+      </div>
 
-      {/* VIEW MODE 1: WORKOUT PROGRAMS */}
+      {/* VIEW MODE 1: ROUTINES / PROGRAMS */}
       {viewMode === 'programs' && (
         <div>
-          {isLoading ? (
-            <div id="workouts_loading_skeleton" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div
-                  key={`workout_skeleton_${i}`}
-                  className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl overflow-hidden animate-pulse flex flex-col justify-between shadow-xs"
-                >
-                  <div className="h-48 bg-slate-200 dark:bg-zinc-800 relative flex items-center justify-center">
-                    <Dumbbell className="w-8 h-8 text-slate-400 dark:text-zinc-700/50" />
-                  </div>
-                  <div className="p-4 sm:p-5 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="h-4 w-20 bg-slate-200 dark:bg-zinc-800 rounded-md" />
-                      <div className="h-4 w-12 bg-slate-200 dark:bg-zinc-800 rounded-md" />
-                    </div>
-                    <div className="h-6 w-3/4 bg-slate-200 dark:bg-zinc-800 rounded-md" />
-                    <div className="h-3.5 w-full bg-slate-100 dark:bg-zinc-800/50 rounded" />
-                    <div className="pt-3 border-t border-slate-200 dark:border-zinc-800/80 flex items-center justify-between">
-                      <div className="h-4 w-24 bg-slate-200 dark:bg-zinc-800 rounded" />
-                      <div className="h-4 w-16 bg-slate-200 dark:bg-zinc-800 rounded" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : filteredWorkouts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {filteredWorkouts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredWorkouts.map(workout => {
-                const isLocked = workout.isPremiumOnly && !isPremium;
                 const isFav = favoriteIds.includes(workout.workoutId);
+                const isLocked = workout.isPremiumOnly && !isPremium;
 
                 return (
                   <div
                     key={workout.workoutId}
                     id={`workout_card_${workout.workoutId}`}
                     onClick={() => onSelectWorkout(workout)}
-                    className="group bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-amber-500/50 hover:shadow-xl hover:shadow-amber-500/5 transition-all cursor-pointer flex flex-col justify-between"
+                    className="group relative bg-zinc-900 border border-zinc-800 hover:border-amber-500/50 rounded-2xl overflow-hidden shadow-sm transition-all duration-200 cursor-pointer flex flex-col justify-between"
                   >
-                    {/* Card Media Header */}
-                    <div className="relative h-48 overflow-hidden bg-zinc-950">
-                      <img
-                        src={workout.imageUrl}
-                        alt={workout.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div 
-                        className="absolute inset-0 pointer-events-none"
-                        style={{
-                          background: 'linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.15) 100%)'
-                        }}
-                      />
-
-                      {/* Top Badges */}
-                      <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                        <span 
-                          className="card-media-category-badge text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded backdrop-blur-md border shadow-xs"
-                          style={{
-                            backgroundColor: 'rgba(15, 23, 42, 0.85)',
-                            color: '#f8fafc',
-                            borderColor: 'rgba(255, 255, 255, 0.25)'
-                          }}
-                        >
-                          {workout.category}
-                        </span>
+                    {/* Card Body */}
+                    <div className="p-5">
+                      <div className="flex items-start justify-between gap-3 mb-2">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded bg-zinc-800 text-amber-400 font-mono">
+                            {workout.category}
+                          </span>
+                          <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border font-mono ${difficultyColors[workout.difficulty]?.bg || 'bg-zinc-800'} ${difficultyColors[workout.difficulty]?.text || 'text-zinc-300'} ${difficultyColors[workout.difficulty]?.border || 'border-zinc-700'}`}>
+                            {workout.difficulty}
+                          </span>
+                        </div>
 
                         <button
-                          type="button"
+                          id={`fav_btn_${workout.workoutId}`}
                           onClick={(e) => {
                             e.stopPropagation();
                             onToggleFavorite(workout.workoutId);
                           }}
-                          className={`p-2 rounded-xl backdrop-blur-md transition-colors ${
-                            isFav 
-                              ? 'bg-rose-500/20 text-rose-500 border border-rose-500/30' 
-                              : 'bg-zinc-900/80 text-zinc-400 hover:text-white'
-                          }`}
+                          className="p-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-amber-400 transition-colors"
+                          title={isFav ? 'Remove from favorites' : 'Add to favorites'}
                         >
-                          <Heart className={`w-4 h-4 ${isFav ? 'fill-rose-500' : ''}`} />
+                          <Star className={`w-4 h-4 ${isFav ? 'text-amber-400 fill-amber-400' : ''}`} />
                         </button>
                       </div>
 
-                      {/* Bottom Image Stats */}
-                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs font-mono">
-                        <div 
-                          className="card-media-stat-pill flex items-center gap-1.5 px-2.5 py-1 rounded-md backdrop-blur-md shadow-xs"
-                          style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)', color: '#f1f5f9' }}
-                        >
-                          <Clock className="w-3.5 h-3.5 text-amber-400" />
-                          <span style={{ color: '#f1f5f9' }}>{workout.durationMinutes}m</span>
-                        </div>
-                        <div 
-                          className="card-media-stat-pill flex items-center gap-1.5 px-2.5 py-1 rounded-md backdrop-blur-md shadow-xs"
-                          style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)', color: '#f1f5f9' }}
-                        >
-                          <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                          <span style={{ color: '#f1f5f9' }}>{workout.estimatedCalories} kcal</span>
-                        </div>
-                      </div>
-                    </div>
+                      <h3 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors line-clamp-2 min-h-[2.75rem] leading-snug">
+                        {workout.title}
+                      </h3>
 
-                    {/* Card Content */}
-                    <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center gap-2 mb-1.5">
-                          <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
-                            workout.difficulty === 'Advanced' ? 'bg-rose-500/20 text-rose-400' :
-                            workout.difficulty === 'Intermediate' ? 'bg-amber-500/20 text-amber-400' :
-                            'bg-emerald-500/20 text-emerald-400'
-                          }`}>
-                            {workout.difficulty}
-                          </span>
-                          <span className="text-[11px] text-zinc-500 font-mono">
-                            {workout.exerciseCount} exercises
-                          </span>
-                        </div>
+                      <p className="text-xs text-zinc-400 mt-1 line-clamp-2 leading-relaxed">
+                        {workout.description}
+                      </p>
 
-                        <h3 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors line-clamp-1">
-                          {workout.title}
-                        </h3>
-                        <p className="text-xs text-zinc-400 mt-1 line-clamp-2 leading-relaxed">
-                          {workout.description}
-                        </p>
+                      {/* Workout metrics */}
+                      <div className="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-zinc-800/80 text-[11px] text-zinc-400">
+                        <div className="flex items-center gap-1.5">
+                          <Clock className="w-3.5 h-3.5 text-zinc-500" />
+                          <span>{workout.durationMinutes}m</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <Flame className="w-3.5 h-3.5 text-amber-500" />
+                          <span>{workout.estimatedCalories} kcal</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <Dumbbell className="w-3.5 h-3.5 text-zinc-500" />
+                          <span>{workout.exercises.length} moves</span>
+                        </div>
                       </div>
 
                       {/* Muscle tags footer */}
@@ -563,81 +432,75 @@ export const WorkoutsView: React.FC<WorkoutsViewProps> = ({
       {/* VIEW MODE 2: EXERCISE LIBRARY (ALL INDIVIDUAL EXERCISES) */}
       {viewMode === 'library' && (
         <div>
-          {isLoading ? (
-            <div id="exercises_loading_skeleton" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div
-                  key={`exercise_skeleton_${i}`}
-                  className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl p-4 animate-pulse space-y-3 shadow-xs"
-                >
-                  <div className="flex justify-between items-center">
-                    <div className="h-4 w-20 bg-slate-200 dark:bg-zinc-800 rounded" />
-                    <div className="h-4 w-14 bg-slate-200 dark:bg-zinc-800 rounded" />
-                  </div>
-                  <div className="h-5 w-2/3 bg-slate-200 dark:bg-zinc-800 rounded" />
-                  <div className="h-3 w-full bg-slate-100 dark:bg-zinc-800/50 rounded" />
-                  <div className="pt-2 border-t border-slate-200 dark:border-zinc-800/80 flex justify-between">
-                    <div className="h-3 w-20 bg-slate-200 dark:bg-zinc-800/60 rounded" />
-                    <div className="h-3 w-12 bg-slate-200 dark:bg-zinc-800/60 rounded" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : filteredExercises.length > 0 ? (
+          {filteredExercises.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredExercises.map(exercise => (
-                <div
-                  key={exercise.id}
-                  id={`exercise_card_${exercise.id}`}
-                  onClick={() => setSelectedExercise(exercise)}
-                  className="group bg-zinc-900 border border-zinc-800 hover:border-amber-500/40 rounded-xl p-4 transition-all cursor-pointer flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-800 text-amber-400 font-mono">
-                        {exercise.category}
-                      </span>
-                      <span className="text-[11px] text-zinc-500 font-mono">
-                        {exercise.defaultSets} × {exercise.defaultReps}
-                      </span>
+              {filteredExercises.map(exercise => {
+                const diff = exercise.difficulty || 'Intermediate';
+                const dStyle = difficultyColors[diff] || difficultyColors['Intermediate'];
+
+                return (
+                  <div
+                    key={exercise.id}
+                    id={`exercise_card_${exercise.id}`}
+                    onClick={() => setSelectedExercise(exercise)}
+                    className="group bg-zinc-900 border border-zinc-800 hover:border-amber-500/40 rounded-xl p-4 transition-all cursor-pointer flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-800 text-amber-400 font-mono">
+                            {exercise.category}
+                          </span>
+                          <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border font-mono ${dStyle.bg} ${dStyle.text} ${dStyle.border}`}>
+                            {diff}
+                          </span>
+                        </div>
+                        {exercise.gifUrl && (
+                          <span className="flex items-center gap-1 text-[10px] text-amber-400 font-mono px-1.5 py-0.5 rounded bg-amber-500/10 border border-amber-500/30" title="Includes animated demonstration">
+                            <Film className="w-2.5 h-2.5" />
+                            <span>GIF</span>
+                          </span>
+                        )}
+                      </div>
+
+                      <h4 className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">
+                        {exercise.name}
+                      </h4>
+
+                      <p className="text-[11px] text-zinc-400 mt-1 line-clamp-2 leading-relaxed">
+                        {exercise.description || exercise.tips || exercise.instructions[0]}
+                      </p>
                     </div>
 
-                    <h4 className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">
-                      {exercise.name}
-                    </h4>
-
-                    <p className="text-[11px] text-zinc-400 mt-1 line-clamp-2 leading-relaxed">
-                      {exercise.tips || exercise.instructions[0]}
-                    </p>
+                    <div className="mt-4 pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs">
+                      <span className="text-[10px] text-zinc-500 truncate max-w-[170px]">
+                        {exercise.equipmentNeeded}
+                      </span>
+                      <span className="text-amber-400 font-bold text-[11px] flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
+                        Guide <ChevronRight className="w-3 h-3" />
+                      </span>
+                    </div>
                   </div>
-
-                  <div className="mt-4 pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs">
-                    <span className="text-[10px] text-zinc-500 truncate max-w-[170px]">
-                      {exercise.equipmentNeeded}
-                    </span>
-                    <span className="text-amber-400 font-bold text-[11px] flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform">
-                      Guide <ChevronRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-12 text-center">
               <Dumbbell className="w-12 h-12 text-zinc-600 mx-auto mb-3" />
               <h3 className="text-base font-bold text-zinc-200">No exercises found</h3>
               <p className="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">
-                No exercises match your search query "{searchQuery}".
+                No exercises match your current filters.
               </p>
             </div>
           )}
         </div>
       )}
 
-      {/* Exercise Detail Modal */}
+      {/* Exercise Detail Modal with GIF Preview & Single Exercise Launch */}
       <ExerciseDetailModal
         exercise={selectedExercise}
         onClose={() => setSelectedExercise(null)}
+        onStartAsQuickWorkout={handleStartQuickExercise}
       />
     </div>
   );

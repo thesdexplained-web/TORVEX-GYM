@@ -6,6 +6,7 @@ export const WORKOUT_CATEGORIES: { id: WorkoutCategory; name: string; descriptio
   { id: 'Lower Body', name: 'Lower Body', description: 'Quads, hamstrings, glutes, and calf power building', icon: 'Footprints' },
   { id: 'Strength', name: 'Strength', description: 'Heavy compound barbell & dumbbell overload protocols', icon: 'ShieldCheck' },
   { id: 'Cardio', name: 'Cardio', description: 'High intensity interval training and aerobic threshold', icon: 'HeartPulse' },
+  { id: 'Yoga', name: 'Yoga', description: 'Mindful dynamic flows, balance postures, and deep breathing', icon: 'Activity' },
   { id: 'Core', name: 'Core', description: 'Anti-rotation, rotational torque, and isometric stability', icon: 'Target' },
   { id: 'Mobility', name: 'Mobility', description: 'Joint decompression, fascia release, and active range', icon: 'Sparkles' },
 ];
@@ -721,6 +722,177 @@ export const INITIAL_WORKOUTS: Workout[] = [
         instructions: ['Hold bar at thighs.', 'Shrug straight up.', 'Hold isometric grip for 15s after last rep.']
       }
     ]
+  },
+  {
+    workoutId: 'torvex-yoga-vinyasa',
+    title: 'Vinyasa Flow & Dynamic Balance',
+    description: 'Synchronize breath with movement through foundational sun salutations, standing warrior postures, and soothing restorative spinal stretches.',
+    category: 'Yoga',
+    difficulty: 'Zero Level',
+    durationMinutes: 30,
+    targetMuscles: ['Full Body', 'Hamstrings', 'Hips', 'Shoulders', 'Core'],
+    exerciseCount: 5,
+    estimatedCalories: 180,
+    imageUrl: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=1200&auto=format&fit=crop',
+    isPremiumOnly: false,
+    exercises: [
+      {
+        exerciseId: 'ex-yoga-sun-salutation',
+        exerciseName: 'Sun Salutation Flow (Surya Namaskar)',
+        targetMuscles: ['Full Body', 'Hamstrings', 'Chest'],
+        sets: 3,
+        reps: 5,
+        weightKg: 0,
+        restSeconds: 30,
+        instructions: [
+          'Inhale sweep arms upward to extended mountain pose.',
+          'Exhale fold forward touching floor or shins.',
+          'Step back to plank, lower through chaturanga, press up to upward-facing dog.',
+          'Exhale press back to downward-facing dog and hold for 5 breaths.'
+        ]
+      },
+      {
+        exerciseId: 'ex-yoga-downward-dog',
+        exerciseName: 'Downward-Facing Dog (Adho Mukha Svanasana)',
+        targetMuscles: ['Hamstrings', 'Calves', 'Shoulders', 'Lats'],
+        sets: 3,
+        reps: 1,
+        weightKg: 0,
+        restSeconds: 30,
+        instructions: [
+          'Spread fingers wide on mat shoulder-width apart.',
+          'Lift hips toward the ceiling forming an inverted V-shape.',
+          'Press chest gently toward thighs while relaxing head and neck.'
+        ]
+      },
+      {
+        exerciseId: 'ex-yoga-warrior-two',
+        exerciseName: 'Warrior II (Virabhadrasana II)',
+        targetMuscles: ['Quads', 'Glutes', 'Hips', 'Shoulders'],
+        sets: 3,
+        reps: 2,
+        weightKg: 0,
+        restSeconds: 30,
+        instructions: [
+          'Step front foot forward, knee bent at 90 degrees directly over ankle.',
+          'Keep back leg straight and outer edge of back foot pressed into mat.',
+          'Extend arms parallel to floor, gazing over front middle finger.'
+        ]
+      },
+      {
+        exerciseId: 'ex-yoga-triangle-pose',
+        exerciseName: 'Extended Triangle Pose (Utthita Trikonasana)',
+        targetMuscles: ['Hamstrings', 'Obliques', 'Hips', 'Groin'],
+        sets: 3,
+        reps: 2,
+        weightKg: 0,
+        restSeconds: 30,
+        instructions: [
+          'Straighten both legs with feet wide apart.',
+          'Hinge sideways at the hip reaching front hand down to shin or ankle.',
+          'Reach opposite arm vertically toward ceiling opening chest.'
+        ]
+      },
+      {
+        exerciseId: 'ex-yoga-childs-pose',
+        exerciseName: 'Balasana (Restorative Child’s Pose)',
+        targetMuscles: ['Lower Back', 'Hips', 'Ankles', 'Shoulders'],
+        sets: 2,
+        reps: 1,
+        weightKg: 0,
+        restSeconds: 20,
+        instructions: [
+          'Kneel on mat with big toes touching and knees wide apart.',
+          'Sink hips back onto heels and fold torso forward between thighs.',
+          'Rest forehead on mat and extend arms long in front with relaxed deep breaths.'
+        ]
+      }
+    ]
+  },
+  {
+    workoutId: 'torvex-yoga-power',
+    title: 'Power Ashtanga Yoga & Core Ignition',
+    description: 'An athletic, heat-building vinyasa sequence blending balancing warrior series, core plank holds, and deep hip openers for mobility and strength.',
+    category: 'Yoga',
+    difficulty: 'Intermediate',
+    durationMinutes: 40,
+    targetMuscles: ['Core', 'Glutes', 'Upper Back', 'Shoulders', 'Adductors'],
+    exerciseCount: 5,
+    estimatedCalories: 260,
+    imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1200&auto=format&fit=crop',
+    isPremiumOnly: false,
+    exercises: [
+      {
+        exerciseId: 'ex-yoga-warrior-three',
+        exerciseName: 'Warrior III Dynamic Balance',
+        targetMuscles: ['Hamstrings', 'Glutes', 'Core', 'Spinal Erectors'],
+        sets: 3,
+        reps: 6,
+        weightKg: 0,
+        restSeconds: 45,
+        instructions: [
+          'From standing, balance on one leg while hinging torso forward.',
+          'Float the back leg straight back parallel to the ground.',
+          'Reach arms forward forming a straight horizontal line from fingers to back heel.'
+        ]
+      },
+      {
+        exerciseId: 'ex-yoga-crow-pose',
+        exerciseName: 'Bakasana (Crow Pose Progression)',
+        targetMuscles: ['Forearms', 'Wrists', 'Deltoids', 'Core'],
+        sets: 3,
+        reps: 4,
+        weightKg: 0,
+        restSeconds: 45,
+        instructions: [
+          'Squat down and place palms flat on mat shoulder-width apart.',
+          'Place knees onto the backs of your upper triceps.',
+          'Lean forward shifting weight onto hands and lift toes off mat one at a time.'
+        ]
+      },
+      {
+        exerciseId: 'ex-yoga-pigeon-pose',
+        exerciseName: 'Eka Pada Rajakapotasana (Pigeon Pose)',
+        targetMuscles: ['Glutes', 'Piriformis', 'Psoas', 'Hip Flexors'],
+        sets: 2,
+        reps: 2,
+        weightKg: 0,
+        restSeconds: 40,
+        instructions: [
+          'Bring right knee forward behind right wrist, shin angled across mat.',
+          'Slide left leg straight back with top of foot on mat.',
+          'Keep hips square and lower torso over front shin.'
+        ]
+      },
+      {
+        exerciseId: 'ex-yoga-boat-pose',
+        exerciseName: 'Navasana (Boat Pose Core Isometric)',
+        targetMuscles: ['Rectus Abdominis', 'Hip Flexors', 'Lower Back'],
+        sets: 3,
+        reps: 30,
+        weightKg: 0,
+        restSeconds: 30,
+        instructions: [
+          'Sit with knees bent, lift feet off floor balancing on sit bones.',
+          'Straighten legs to 45 degrees forming a V-shape with torso.',
+          'Reach arms parallel to floor alongside shins and hold strong.'
+        ]
+      },
+      {
+        exerciseId: 'ex-yoga-bridge-wheel',
+        exerciseName: 'Bridge to Wheel Heart Opener',
+        targetMuscles: ['Glutes', 'Spinal Erectors', 'Chest', 'Quads'],
+        sets: 3,
+        reps: 8,
+        weightKg: 0,
+        restSeconds: 45,
+        instructions: [
+          'Lie on back with feet flat on floor hip-width apart.',
+          'Drive through heels to lift pelvis high, squeezing glutes.',
+          'Interlace fingers under back and press shoulders down into mat.'
+        ]
+      }
+    ]
   }
 ];
 
@@ -882,6 +1054,6 @@ export const SUBSCRIPTION_PRODUCTS: SubscriptionProduct[] = [
     billingPeriodMonths: 12,
     badge: 'BEST VALUE',
     effectiveMonthlyPriceDisplay: '₹150/mo',
-    description: 'Maximum savings. Full 7-Day Free Trial included.'
+    description: 'Maximum savings. Full 12 months of unlimited Pro access.'
   }
 ];

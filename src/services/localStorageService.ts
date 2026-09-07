@@ -1,5 +1,5 @@
 /**
- * LocalStorageService - Manages offline caching, preferences,
+ * LocalStorageService - Manages offline caching, session history,
  * interrupted workout recovery, and sync queues
  */
 
@@ -12,6 +12,8 @@ const STORAGE_KEYS = {
   OFFLINE_SESSIONS_HISTORY: 'torvex_sessions_history_cache',
   OFFLINE_SUBSCRIPTION_CACHE: 'torvex_subscription_cache',
   HEALTH_CONNECTIONS_CACHE: 'torvex_health_connections_cache',
+  FAVORITES_CACHE: 'torvex_favorites_cache',
+  NOTES_CACHE: 'torvex_notes_cache',
 };
 
 export interface SyncQueueItem {
@@ -174,6 +176,120 @@ export class LocalStorageService {
       localStorage.removeItem(STORAGE_KEYS.OFFLINE_SUBSCRIPTION_CACHE);
     } catch (e) {
       console.error('Failed to clear cached subscription', e);
+    }
+  }
+
+  // Persisted Favorites Caching
+  static getFavoriteWorkoutIds(userId?: string): string[] {
+    try {
+      const key = userId ? `${STORAGE_KEYS.FAVORITES_CACHE}_${userId}` : STORAGE_KEYS.FAVORITES_CACHE;
+      const raw = localStorage.getItem(key);
+      if (raw) return JSON.parse(raw);
+      // Fallback to global favorites cache if user-specific is empty
+      const globalRaw = localStorage.getItem(STORAGE_KEYS.FAVORITES_CACHE);
+      return globalRaw ? JSON.parse(globalRaw) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  static saveFavoriteWorkoutIds(ids: string[], userId?: string): void {
+    try {
+      const key = userId ? `${STORAGE_KEYS.FAVORITES_CACHE}_${userId}` : STORAGE_KEYS.FAVORITES_CACHE;
+      const json = JSON.stringify(ids);
+      localStorage.setItem(key, json);
+      localStorage.setItem(STORAGE_KEYS.FAVORITES_CACHE, json);
+    } catch (e) {
+      console.warn('Failed to cache favorite workout IDs:', e);
+    }
+  }
+
+  static toggleFavoriteWorkoutId(workoutId: string, userId?: string): { isFav: boolean; updatedIds: string[] } {
+    try {
+      const current = this.getFavoriteWorkoutIds(userId);
+      const isAlreadyFav = current.includes(workoutId);
+      const updated = isAlreadyFav
+        ? current.filter(id => id !== workoutId)
+        : [...current, workoutId];
+      this.saveFavoriteWorkoutIds(updated, userId);
+      return { isFav: !isAlreadyFav, updatedIds: updated };
+    } catch (e) {
+      console.warn('Failed to toggle favorite locally:', e);
+      return { isFav: false, updatedIds: [] };
+    }
+  }
+
+  // Persisted Notes Caching
+  static getNotes(userId?: string): any[] {
+    try {
+      const key = userId ? `${STORAGE_KEYS.NOTES_CACHE}_${userId}` : STORAGE_KEYS.NOTES_CACHE;
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  static saveNotes(notes: any[], userId?: string): void {
+    try {
+      const key = userId ? `${STORAGE_KEYS.NOTES_CACHE}_${userId}` : STORAGE_KEYS.NOTES_CACHE;
+      localStorage.setItem(key, JSON.stringify(notes));
+    } catch (e) {
+      console.warn('Failed to cache notes:', e);
+    }
+  }
+
+  static saveNote(note: any, userId?: string): void {
+    try {
+      const current = this.getNotes(userId);
+      const existingIdx = current.findIndex(n => n.noteId === note.noteId);
+      let updated: any[];
+      if (existingIdx >= 0) {
+        updated = [...current];
+        updated[existingIdx] = note;
+      } else {
+        updated = [note, ...current];
+      }
+      this.saveNotes(updated, userId);
+    } catch (e) {
+      console.warn('Failed to save note locally:', e);
+    }
+  }
+
+  // Persisted Workout Sessions History Caching
+  static getCachedSessionsHistory(userId?: string): any[] {
+    try {
+      const key = userId ? `${STORAGE_KEYS.OFFLINE_SESSIONS_HISTORY}_${userId}` : STORAGE_KEYS.OFFLINE_SESSIONS_HISTORY;
+      const raw = localStorage.getItem(key);
+      if (raw) return JSON.parse(raw);
+      const globalRaw = localStorage.getItem(STORAGE_KEYS.OFFLINE_SESSIONS_HISTORY);
+      return globalRaw ? JSON.parse(globalRaw) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  static saveCachedSessionsHistory(sessions: any[], userId?: string): void {
+    try {
+      const key = userId ? `${STORAGE_KEYS.OFFLINE_SESSIONS_HISTORY}_${userId}` : STORAGE_KEYS.OFFLINE_SESSIONS_HISTORY;
+      const json = JSON.stringify(sessions);
+      localStorage.setItem(key, json);
+      localStorage.setItem(STORAGE_KEYS.OFFLINE_SESSIONS_HISTORY, json);
+    } catch (e) {
+      console.warn('Failed to cache sessions history:', e);
+    }
+  }
+
+  static addSessionToHistory(session: any, userId?: string): any[] {
+    try {
+      const existing = this.getCachedSessionsHistory(userId);
+      const filtered = existing.filter(s => s.sessionId !== session.sessionId);
+      const updated = [session, ...filtered];
+      this.saveCachedSessionsHistory(updated, userId);
+      return updated;
+    } catch (e) {
+      console.warn('Failed to add session to local history:', e);
+      return [session];
     }
   }
 }
